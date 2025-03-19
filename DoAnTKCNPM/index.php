@@ -1,4 +1,12 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<?php
  require_once 'SanPham_Database.php';
  $sanpham_database = new SanPham_Database();
  $sanphams = $sanpham_database->TatCaSanPham();
@@ -20,34 +28,37 @@
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand fw-bold" href="#!">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" href="#!">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">All Products</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                     </ul>
-                    <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
-                </div>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-dark me-3" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+                <a href="logout.php" class="btn btn-danger">Đăng xuất</a>
             </div>
-        </nav>
+        </div>
+    </div>
+</nav>
+
         <!-- Header-->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -72,8 +83,8 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder"><?= $item['ten'] ?></h5>
-                                    <!-- Product reviews-->
+                                    <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="btn">
+                                    <h5 class="fw-bolder"> <?= htmlspecialchars($item['ten']) ?></h5></a><br>                                    <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         <div class="bi-star-fill"></div>
                                         <div class="bi-star-fill"></div>
@@ -83,6 +94,12 @@
                                     </div>
                                     <!-- Product price-->
                                     <?= $item['gia'] ?>
+                                    <?php
+                                    $desc = substr($item['mota'], 0, 200);
+                                    ?>
+                                    <p><?= htmlspecialchars(substr($desc, 0, strrpos($desc, ""))) ?>
+                                        <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>">[...]</a>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->
