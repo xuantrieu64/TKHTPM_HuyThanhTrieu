@@ -32,12 +32,12 @@ $products = $product_database->TatCaSanPham();
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span> 
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active fw-semibold" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link fw-semibold" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-semibold" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="thongke_sanpham.php">Thống kê</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-semibold" id="navbarDropdown" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -78,8 +78,10 @@ $products = $product_database->TatCaSanPham();
                             <th>ID</th>
                             <th>Tên</th>
                             <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Đã bán</th>
                             <th>Mô tả</th>
-                            <th style="width: 150px;">Ngày tạo</th>
+                            <th style="width: 100px;">Ngày tạo</th>
                             <th>Ảnh</th>
                             <th>Mã Loại</th>
                             <th style="width: 150px;">Hành động</th>
@@ -92,6 +94,8 @@ $products = $product_database->TatCaSanPham();
                                     <td><?= htmlspecialchars($product['ma']) ?></td>
                                     <td><?= htmlspecialchars($product['ten']) ?></td>
                                     <td><?= htmlspecialchars($product['gia']) ?> VNĐ</td>
+                                    <td><?= htmlspecialchars($product['soluong']) ?></td>
+                                    <td><?= htmlspecialchars($product['daban']) ?></td>
                                     <td><?= htmlspecialchars($product['mota']) ?></td>
                                     <td><?= htmlspecialchars($product['ngaytao']) ?></td>
                                     <td>

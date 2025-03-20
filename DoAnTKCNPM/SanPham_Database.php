@@ -71,13 +71,13 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    public function addProduct($id, $name, $price, $desc, $image, $category_id, $created_date)
+    public function addProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
     {
         $sql = self::$connection->prepare("
-            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `mota`, `anh`, `maloai`, `ngaytao`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `mota`, `anh`, `maloai`, `ngaytao`, `soluong`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $sql->bind_param('isissis', $id, $name, $price, $desc, $image, $category_id, $created_date);
+        $sql->bind_param('isissisi', $id, $name, $price, $desc, $image, $category_id, $created_date, $soluong);
         $result = $sql->execute();
         return $result;
     }
@@ -109,15 +109,36 @@ class SanPham_Database extends Database
     //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
     //     return $stmt->execute();
     // }
-    public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date)
+    public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
     {
         $sql = self::$connection->prepare("
             UPDATE `sanpham` 
-            SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ? 
+            SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?, `soluong` = ?
             WHERE `ma` = ?
         ");
-        $sql->bind_param('sissisi', $name, $price, $desc, $image, $category_id, $created_date, $id);
+        $sql->bind_param('sissisii', $name, $price, $desc, $image, $category_id, $created_date,$soluong, $id);
         $result = $sql->execute();
         return $result;
     }
+    public function getProductSales() {
+        $sql = "SELECT ten, daban AS soluong_ban FROM sanpham ORDER BY soluong_ban DESC";
+    
+        $stmt = self::$connection->prepare($sql);
+        if (!$stmt) {
+            die("Lỗi truy vấn: " . self::$connection->error);
+        }
+    
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    
+        return $data ?: []; // Trả về mảng rỗng nếu không có dữ liệu
+    }
+    
+    
+    
 }

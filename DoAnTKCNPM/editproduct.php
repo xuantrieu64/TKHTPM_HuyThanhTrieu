@@ -57,23 +57,27 @@ if (isset($_GET['id'])) {
                 <form action="productProcess.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="edit">
                     <div class="mb-3">
-                        <label class="form-label">Product ID:</label>
+                        <label class="form-label">Mã sản phẩm:</label>
                         <input type="text" class="form-control" name="id" value="<?= htmlspecialchars($products['ma']) ?>" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Name:</label>
+                        <label class="form-label">Tên sản phẩm:</label>
                         <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($products['ten']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Price:</label>
+                        <label class="form-label">Giá:</label>
                         <input type="number" class="form-control" name="price" value="<?= htmlspecialchars($products['gia']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description:</label>
+                        <label class="form-label">Số lượng:</label>
+                        <input type="number" class="form-control" name="price" value="<?= htmlspecialchars($products['soluong']) ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả:</label>
                         <textarea class="form-control" name="des" required><?= htmlspecialchars($products['mota']) ?></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Image:</label>
+                        <label class="form-label">Hình ảnh:</label>
                         <input type="file" class="form-control" name="image">
                         <?php if (!empty($products['anh'])): ?>
                             <div class="mt-2 text-center">
@@ -83,11 +87,11 @@ if (isset($_GET['id'])) {
                         <input type="hidden" name="current_image" value="<?= htmlspecialchars($products['anh']) ?>">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Category:</label>
+                        <label class="form-label">Mã loại:</label>
                         <input type="text" class="form-control" name="category_id" value="<?= htmlspecialchars($products['maloai']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Created Date:</label>
+                        <label class="form-label">Ngày tạo: </label>
                         <input type="date" class="form-control" name="created_date" value="<?= htmlspecialchars($products['ngaytao']) ?>" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>

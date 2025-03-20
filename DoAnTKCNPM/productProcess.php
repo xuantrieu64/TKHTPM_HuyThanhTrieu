@@ -59,7 +59,7 @@ if (isset($_POST['action'])) {
     $price = $_POST['price'] ?? "";
     $created_date = $_POST['created_date'] ?? "";
     $current_image = $_POST['current_image'] ?? "";
-
+    $soluong = $_POST['soluong']?? "";
     // Kiểm tra đầu vào
     $error = validateInput($name, $price, $category_id, $created_date);
     if ($error) {
@@ -75,9 +75,9 @@ if (isset($_POST['action'])) {
     }
 
     if ($action === "add") {
-        $product_Database->addProduct($id, $name, $price, $des, $image, $category_id, $created_date);
+        $product_Database->addProduct($id, $name, $price, $des, $image, $category_id, $created_date, $soluong);
     } elseif ($action === "edit") {
-        $product_Database->editProduct($id, $name, $price, $des, $image, $category_id, $created_date);
+        $product_Database->editProduct($id, $name, $price, $des, $image, $category_id, $created_date, $soluong);
     }
 
     header('Location: crud_product.php');
