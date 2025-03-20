@@ -56,23 +56,41 @@ class SanPham_Database extends Database
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
     
-    public function addProduct($id, $name, $price, $desc, $image, $category_id)
-    {
-        $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
-        $sql->bind_param("isissi", $id, $name, $price, $desc, $image, $category_id);
-        $resualt = $sql->execute();
-        return $resualt;
-    }
-
-    //Delete
+    // public function addProduct($id, $name, $price, $desc, $image, $category_id)
+    // {
+    //     $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
+    //     $sql->bind_param("isissi", $id, $name, $price, $desc, $image, $category_id);
+    //     $resualt = $sql->execute();
+    //     return $resualt;
+    // }
     public function deleteProduct($id)
     {
-        $sql = self::$connection->prepare("DELETE FROM sanpham WHERE masp = ?");
-        $sql->bind_param("i", $id);
-        $resualt = $sql->execute();
-
-        return $resualt;
+        $sql = self::$connection->prepare("DELETE FROM `sanpham` WHERE ma=?");
+        $sql->bind_param('i', $id);
+        $result = $sql->execute();
+        return $result;
     }
+
+    public function addProduct($id, $name, $price, $desc, $image, $category_id, $created_date)
+    {
+        $sql = self::$connection->prepare("
+            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `mota`, `anh`, `maloai`, `ngaytao`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        $sql->bind_param('isissis', $id, $name, $price, $desc, $image, $category_id, $created_date);
+        $result = $sql->execute();
+        return $result;
+    }
+    
+    //Delete
+    // public function deleteProduct($id)
+    // {
+    //     $sql = self::$connection->prepare("DELETE FROM sanpham WHERE masp = ?");
+    //     $sql->bind_param("i", $id);
+    //     $resualt = $sql->execute();
+
+    //     return $resualt;
+    // }
     //Search
     public function searchProduct($keyword)
     {
@@ -85,10 +103,21 @@ class SanPham_Database extends Database
         return $items;
     }
     //Edit
-    public function editProduct($id, $name, $price, $desc, $image, $category_id)
+    // public function editProduct($id, $name, $price, $desc, $image, $category_id)
+    // {
+    //     $stmt = self::$connection->prepare("UPDATE Products SET id = ? name = ?, price = ?, desc = ?, image = ?, category_id = ? WHERE id = ?");
+    //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
+    //     return $stmt->execute();
+    // }
+    public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date)
     {
-        $stmt = self::$connection->prepare("UPDATE Products SET id = ? name = ?, price = ?, desc = ?, image = ?, category_id = ? WHERE id = ?");
-        $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
-        return $stmt->execute();
+        $sql = self::$connection->prepare("
+            UPDATE `sanpham` 
+            SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ? 
+            WHERE `ma` = ?
+        ");
+        $sql->bind_param('sissisi', $name, $price, $desc, $image, $category_id, $created_date, $id);
+        $result = $sql->execute();
+        return $result;
     }
 }

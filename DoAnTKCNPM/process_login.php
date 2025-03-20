@@ -37,9 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Chuyển hướng theo quyền
             if ($user['role'] == 'admin') {
-                header("Location: admin_dashboard.php");
+                header("Location: crud_product.php");
             } else {
-                header("Location: index.php");
+                header("Location: login.php");
             }
             exit();
         } else {
