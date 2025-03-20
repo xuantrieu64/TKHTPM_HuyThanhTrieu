@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user['role'] == 'admin') {
                 header("Location: crud_product.php");
             } else {
-                header("Location: login.php");
+                header("Location: index.php");
             }
             exit();
         } else {
