@@ -67,53 +67,65 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         </header>
         <!-- Section-->
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-
-                    <?php foreach($sanphams as $item){?>
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <?php foreach($sanphams as $item) { ?> 
+            <div class="col mb-5">
+                <div class="card h-100 shadow-sm border-0">
+                    <!-- Sale badge -->
+                    <?php if (!empty($item['giamgia'])) { ?>
+                        <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                            -<?= $item['giamgia'] ?>%
+                        </div>
+                    <?php } ?>
                     
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                            <!-- Product image-->
-                            <img class="card-img-top" src="img/<?= $item['anh'] ?>" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="btn">
-                                    <h5 class="fw-bolder"> <?= htmlspecialchars($item['ten']) ?></h5></a><br>                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div>
-                                    <!-- Product price-->
-                                    <?= $item['gia'] ?>
-                                    <?php
-                                    $desc = substr($item['mota'], 0, 200);
-                                    ?>
-                                    <p><?= htmlspecialchars(substr($desc, 0, strrpos($desc, ""))) ?>
-                                        <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>">[...]</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Mua</a></div>
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Thêm vào giỏ hàng</a></div>
-                            </div>
+                    <!-- Product image -->
+                    <div class="position-relative overflow-hidden">
+                        <img class="card-img-top img-fluid" src="<?= htmlspecialchars($item['anh']) ?>" alt="<?= htmlspecialchars($item['ten']) ?>" style="object-fit: cover; height: 250px;">
+                    </div>
+                    
+                    <!-- Product details -->
+                    <div class="card-body p-3 text-center">
+                        <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-decoration-none text-dark">
+                            <h5 class="fw-bolder"><?= htmlspecialchars($item['ten']) ?></h5>
+                        </a>
+
+                        <!-- Rating -->
+                        <div class="d-flex justify-content-center small text-warning mb-2">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+
+                        <!-- Product price -->
+                        <p class="text-danger fw-bold mb-1">
+                            <?= number_format($item['gia'], 0, ',', '.') ?> VNĐ
+                        </p>
+
+                        <!-- Product description -->
+                        <?php $desc = substr($item['mota'], 0, 100); ?>
+                        <p class="text-muted small mb-2">
+                            <?= htmlspecialchars(substr($desc, 0, strrpos($desc, " "))) ?>...
+                            <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-primary small">Xem thêm</a>
+                        </p>
+                    </div>
+
+                    <!-- Product actions -->
+                    <div class="card-footer p-3 bg-transparent border-top-0">
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-outline-dark flex-grow-1 me-2" href="#">🛒 Thêm vào giỏ</a>
+                            <a class="btn btn-dark flex-grow-1" href="#">🛍️ Mua ngay</a>
                         </div>
                     </div>
-                    <?php } ?>
-                   
                 </div>
             </div>
-        </section>
+            <?php } ?>
+        </div>
+    </div>
+</section>
+
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
