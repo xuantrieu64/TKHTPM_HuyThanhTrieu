@@ -18,7 +18,7 @@
                 <li><a href=""><img style="width: 50px;" src="image/smartphone.png" alt=""></a></li>
                 <li id="adress-form"><a href="#">Ninh Thuận<i class="fa-solid fa-sort-down"></i></a></li>
                 <li><input type="text" placeholder="Bạn tìm gì..."><i class="fa-solid fa-magnifying-glass"></i></li>
-                <li><a href="cart.html"><button><i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</button></a></li>
+                <li><a href="cart.php"><button><i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</button></a></li>
                 <li><a href="">Lịch sử<br>đơn hàng</a></li>
                 <li><a href=""><span class="parent"><span class="point">.</span></span>Mua thẻ nạp ngay!</a></li>
                 <li><a href="">24h Công nghệ</a></li>
@@ -76,46 +76,6 @@
             </div>
         </div>
     </section>
-    <!-- <section class="cart-pay">
-        <div class="container">
-            <div class="row-grid-pay">
-                <div class="row-grid-pay-left">
-                    <p class="main-h2">Thông tin đơn hàng</p>
-                    <div class="row-grid-pay-left-detail">
-                        
-                    </div>
-                </div>
-                <div class="cart-section-right">
-                    <h2 class="main-h2">Thông tin giao hàng</h2>
-                    <div class="cart-section-right-input-name-phone">
-                        <input type="text" placeholder="Ten" name="" id="">
-                        <input type="text" placeholder="Dien thoai" name="" id="">
-                    </div>
-                    <div class="cart-section-right-input-email">
-                        <input type="text" placeholder="Email" name="" id="">
-                    </div>
-                    <div class="cart-section-right-select">
-                        <select name="" id="city">
-                            <option value="">Tỉnh/Tp</option>
-                        </select>
-                        <select name="" id="district">
-                            <option value="">Quận/huyện</option>
-                        </select>
-                        <select name="" id="ward">
-                            <option value="">Phường/xã</option>
-                        </select>
-                    </div>
-                    <div class="cart-section-right-input-adress">
-                        <input type="text" placeholder="Dia chi" name="" id="">
-                    </div>
-                    <div class="cart-section-right-input-note">
-                        <input type="text" placeholder="Ghi chu" name="" id="">
-                    </div>
-                    <button class="main-btn">Gui don hang</button>
-                </div>
-            </div>
-        </div>
-    </section> -->
 
 </body>
 

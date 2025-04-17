@@ -5,27 +5,25 @@ class SanPham_Database extends Database
 {
     //lay tat ca du lieu
     public function TatCaSanPham()
-   {
+    {
         $sql = self::$connection->prepare("SELECT * FROM sanpham");
-       $sql->execute();
-       $result = array();
+        $sql->execute();
+        $result = array();
         $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $result;
-   }
- 
+    }
 
-    
     //function getAllProducts($page, $perPage)
-   // {
-        // Tính số thứ tự trang bắt đầu
-       // $firstLink = ($page - 1) * $perPage;
-        //Dùng LIMIT để giới hạn số lượng hiển thị 1 trang
-       // $sql = "SELECT * FROM products LIMIT $firstLink, $perPage";
-       // $sql->execute(); //return an object
-       // $items = array();
-       // $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-       // return $items; //return an array
-   // } 
+    // {
+    // Tính số thứ tự trang bắt đầu
+    // $firstLink = ($page - 1) * $perPage;
+    //Dùng LIMIT để giới hạn số lượng hiển thị 1 trang
+    // $sql = "SELECT * FROM products LIMIT $firstLink, $perPage";
+    // $sql->execute(); //return an object
+    // $items = array();
+    // $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+    // return $items; //return an array
+    // } 
 
     //lay id
     // public function getProductById($id)
@@ -55,7 +53,7 @@ class SanPham_Database extends Database
         $sql->execute();
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
-    
+
     // public function addProduct($id, $name, $price, $desc, $image, $category_id)
     // {
     //     $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
@@ -81,7 +79,7 @@ class SanPham_Database extends Database
         $result = $sql->execute();
         return $result;
     }
-    
+
     //Delete
     // public function deleteProduct($id)
     // {
@@ -116,29 +114,27 @@ class SanPham_Database extends Database
             SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?, `soluong` = ?
             WHERE `ma` = ?
         ");
-        $sql->bind_param('sissisii', $name, $price, $desc, $image, $category_id, $created_date,$soluong, $id);
+        $sql->bind_param('sissisii', $name, $price, $desc, $image, $category_id, $created_date, $soluong, $id);
         $result = $sql->execute();
         return $result;
     }
-    public function getProductSales() {
+    public function getProductSales()
+    {
         $sql = "SELECT ten, daban AS soluong_ban FROM sanpham ORDER BY soluong_ban DESC";
-    
+
         $stmt = self::$connection->prepare($sql);
         if (!$stmt) {
             die("Lỗi truy vấn: " . self::$connection->error);
         }
-    
+
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-    
+
         return $data ?: []; // Trả về mảng rỗng nếu không có dữ liệu
     }
-    
-    
-    
 }
