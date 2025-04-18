@@ -14,31 +14,6 @@ class SanPham_Database extends Database
    }
  
 
-    
-    //function getAllProducts($page, $perPage)
-   // {
-        // Tính số thứ tự trang bắt đầu
-       // $firstLink = ($page - 1) * $perPage;
-        //Dùng LIMIT để giới hạn số lượng hiển thị 1 trang
-       // $sql = "SELECT * FROM products LIMIT $firstLink, $perPage";
-       // $sql->execute(); //return an object
-       // $items = array();
-       // $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-       // return $items; //return an array
-   // } 
-
-    //lay id
-    // public function getProductById($id)
-    // {
-    //     $sql = self::$connection->prepare("SELECT * FROM product WHERE id = ?");
-    //     $sql->bind_param("i", $id); //Truy van cau lenh
-    //     $sql->execute(); //Thuc thi cau lenh
-
-    //     $items = array();
-    //     $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
-    //     return $items;
-    // }
-
     public function getProductByID($id)
     {
         $sql = self::$connection->prepare("SELECT * FROM `sanpham` WHERE ma=?");
@@ -56,13 +31,7 @@ class SanPham_Database extends Database
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
     
-    // public function addProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
-    //     $sql->bind_param("isissi", $id, $name, $price, $desc, $image, $category_id);
-    //     $resualt = $sql->execute();
-    //     return $resualt;
-    // }
+
     public function deleteProduct($id)
     {
         $sql = self::$connection->prepare("DELETE FROM `sanpham` WHERE ma=?");
@@ -82,33 +51,24 @@ class SanPham_Database extends Database
         return $result;
     }
     
-    //Delete
-    // public function deleteProduct($id)
-    // {
-    //     $sql = self::$connection->prepare("DELETE FROM sanpham WHERE masp = ?");
-    //     $sql->bind_param("i", $id);
-    //     $resualt = $sql->execute();
-
-    //     return $resualt;
-    // }
     //Search
-    public function searchProduct($keyword)
-    {
-        $sql = self::$connection->prepare("SELECT * FROM product WHERE name LIKE '%$keyword%'");
-        //$sql->bind_param("i", $id); //Truy van cau lenh
-        $sql->execute(); //Thuc thi cau lenh
-
-        $items = array();
-        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-        return $items;
+    
+    
+    public function TimKiemSanPham($keyword) {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE ten LIKE ?");
+        $search = "%" . $keyword . "%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
     }
-    //Edit
-    // public function editProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $stmt = self::$connection->prepare("UPDATE Products SET id = ? name = ?, price = ?, desc = ?, image = ?, category_id = ? WHERE id = ?");
-    //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
-    //     return $stmt->execute();
-    // }
+    
+    
     public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
     {
         $sql = self::$connection->prepare("
@@ -138,6 +98,38 @@ class SanPham_Database extends Database
     
         return $data ?: []; // Trả về mảng rỗng nếu không có dữ liệu
     }
+    
+
+
+
+
+    //loại sản phẩm
+    public function TatCaLoaiSanPham() {
+        $stmt = self::$connection->prepare("SELECT * FROM loai");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $loais = [];
+        while ($row = $result->fetch_assoc()) {
+            $loais[] = $row;
+        }
+        $stmt->close();
+        return $loais;
+    }
+    
+    public function SanPhamTheoLoai($maloai) {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE maloai = ?");
+        $stmt->bind_param("i", $maloai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
+    }
+
+    //Đánh giá
     
     
     
