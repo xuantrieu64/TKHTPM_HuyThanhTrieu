@@ -27,81 +27,6 @@ a {
     margin: auto;
 }
 
-nav {
-    background-color: rgba(13, 10, 10, 0.573);
-}
-
-nav ul {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav ul li,
-a {
-    color: #fff;
-    font-size: 15px;
-}
-
-nav ul li:nth-child(2) a {
-    color: yellow;
-}
-
-nav ul li:nth-child(2) i {
-    color: yellow;
-    font-size: 15px;
-    margin-left: 6px;
-}
-
-nav ul li:nth-child(3) {
-    position: relative;
-}
-
-nav ul li:nth-child(3) input {
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    border: none;
-    padding-left: 6px;
-    outline: none;
-}
-
-nav ul li:nth-child(3) i {
-    position: absolute;
-    font-size: 20px;
-    right: 12px;
-    color: black;
-    line-height: 30px;
-    cursor: pointer;
-}
-
-nav ul li:nth-child(4) button {
-    height: 30px;
-    padding: 0 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-    transition: all 0.3s ease;
-}
-
-nav ul li:nth-child(4) button i {
-    margin-right: 6px;
-}
-
-nav ul li:nth-child(4) button:hover {
-    background-color: #575555;
-}
-
-nav ul li:nth-child(5) {
-    text-align: center;
-}
-
-nav ul li:nth-child(5):hover a {
-    color: yellow;
-}
-
 .parent {
     position: relative;
     width: 10px;
@@ -135,27 +60,6 @@ nav ul li:nth-child(5):hover a {
         transform: scale(3);
         opacity: 0;
     }
-}
-
-nav ul li:nth-child(6) a {
-    text-align: start;
-    color: yellow;
-}
-
-nav ul li:nth-child(7):hover a {
-    color: yellow;
-}
-
-nav ul li:nth-child(8):hover a {
-    color: yellow;
-}
-
-nav ul li:nth-child(9):hover a {
-    color: yellow;
-}
-
-.p-to-top {
-    padding-top: var(--header-height);
 }
 
 .main-btn {
@@ -209,27 +113,6 @@ header .row-flex {
 .header-logo img {
     width: 70px;
     cursor: pointer;
-}
-
-.header-nav nav ul {
-    display: flex;
-}
-
-.header-nav nav ul li {
-    padding: 0 10px;
-    /*tren duoi 0, trai phai 10px*/
-    transition: var(--main-transition);
-    cursor: pointer;
-
-}
-
-.header-nav nav ul li a {
-    line-height: var(--header-height);
-    font-size: smaller;
-}
-
-.header-nav nav ul li:hover {
-    background-color: var(--main-bg);
 }
 
 .header-search {
@@ -592,8 +475,8 @@ footer .row-gird {
     margin-bottom: 12px;
     padding-left: 12px;
     border-radius: 5px;
+    outline: none;
 }
-
 .cart-section-right select {
     height: 35px;
     border: none;
@@ -613,7 +496,6 @@ footer .row-gird {
     display: flex;
     justify-content: space-between;
 }
-
 .cart-section-right-input-name-phone input {
     width: 49%;
 }

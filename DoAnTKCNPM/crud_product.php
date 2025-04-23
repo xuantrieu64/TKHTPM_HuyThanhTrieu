@@ -5,8 +5,6 @@ $product_database = new SanPham_Database();
 
 $products = $product_database->TatCaSanPham();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
