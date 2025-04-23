@@ -70,7 +70,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Số lượng:</label>
-                        <input type="number" class="form-control" name="price" value="<?= htmlspecialchars($products['soluong']) ?>" required>
+                        <input type="number" class="form-control" name="soluong" value="<?= htmlspecialchars($products['soluong']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mô tả:</label>

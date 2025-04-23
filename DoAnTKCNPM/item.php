@@ -1,5 +1,6 @@
 <?php
-require_once 'sanpham_database.php';
+require_once 'SanPham_Database.php';
+session_start();
 
 // Khởi tạo kết nối Database
 $database = new Database();
@@ -31,10 +32,12 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
             height: 400px;
             border-radius: 10px;
         }
+
         .product-img:hover {
             transform: scale(1.05);
             transition: all 0.3s ease;
         }
+
         .related-img {
             height: 220px;
             object-fit: cover;
@@ -45,7 +48,7 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="index.php">Shop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -75,29 +78,37 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
                 </form>
             </div>
         </div>
-    </nav>
-
+    </nav> -->
+    <?php
+    require_once 'header_nav.php';
+    ?>
     <!-- Chi tiết sản phẩm -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
-            <div class="row gx-4 gx-lg-5 align-items-center">
-                <div class="col-md-6">
-                    <img class="img-fluid product-img" src="<?= htmlspecialchars($product['anh']) ?>" alt="Ảnh sản phẩm">
-                </div>
-                <div class="col-md-6">
-                    <h1 class="display-5 fw-bolder"><?= htmlspecialchars($product['ten']) ?></h1>
-                    <div class="fs-5 mb-3">
-                        <span class="text-danger fw-bold"><?= number_format($product['gia'], 0, ',', '.') ?> VNĐ</span>
+            <form action="add_cart.php" method="post">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6">
+                        <img class="img-fluid product-img" src="<?= htmlspecialchars($product['anh']) ?>" alt="Ảnh sản phẩm">
+                        <input type="hidden" name="anh" value="<?= htmlspecialchars($product['anh']) ?>">
                     </div>
-                    <p class="lead"><?= nl2br(htmlspecialchars($product['mota'])) ?></p>
-                    <div class="d-flex">
-                        <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem;">
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                            <i class="bi-cart-fill me-1"></i> Thêm vào giỏ
-                        </button>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder"><?= htmlspecialchars($product['ten']) ?></h1>
+                        <input type="hidden" name="ten" value="<?= htmlspecialchars($product['ten']) ?>">
+                        <div class="fs-5 mb-3">
+                            <span class="text-danger fw-bold"><?= number_format($product['gia'], 0, ',', '.') ?> VNĐ</span>
+                            <input type="hidden" name="gia" value="<?= htmlspecialchars($product['gia']) ?>">
+                        </div>
+                        <p class="lead"><?= nl2br(htmlspecialchars($product['mota'])) ?></p>
+                        <div class="d-flex">
+                            <input type="hidden" name="ma" value="<?= htmlspecialchars($product['ma']) ?>">
+                            <input class="form-control text-center me-3" id="inputQuantity" type="number" name="inputQuantity" value="1" min="1" style="max-width: 4rem;">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                <i class="bi-cart-fill me-1"></i> Thêm vào giỏ
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
 

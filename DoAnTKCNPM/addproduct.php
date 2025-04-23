@@ -20,7 +20,7 @@
             <input type="hidden" name="action" value="add">
             <div class="mb-3">
                 <label for="name" class="form-label">Mã sản phẩm:</label>
-                <input type="text" class="form-control" id="id" name="id" required>
+                <input type="text" class="form-control" id="id" name="id">
             </div>
             <!-- Product Name -->
             <div class="mb-3">

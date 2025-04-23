@@ -69,13 +69,13 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    public function addProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
+    public function addProduct($id, $name, $price, $soluong, $desc, $image, $category_id, $created_date)
     {
         $sql = self::$connection->prepare("
-            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `mota`, `anh`, `maloai`, `ngaytao`, `soluong`) 
+            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `soluong`, `mota`, `anh`, `maloai`, `ngaytao`) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $sql->bind_param('isissisi', $id, $name, $price, $desc, $image, $category_id, $created_date, $soluong);
+        $sql->bind_param('isiissis', $id, $name, $price, $soluong, $desc, $image, $category_id, $created_date);
         $result = $sql->execute();
         return $result;
     }
@@ -107,14 +107,14 @@ class SanPham_Database extends Database
     //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
     //     return $stmt->execute();
     // }
-    public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
+    public function editProduct($id, $name, $price, $soluong, $desc, $image, $category_id, $created_date)
     {
         $sql = self::$connection->prepare("
             UPDATE `sanpham` 
-            SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?, `soluong` = ?
+            SET `ten` = ?, `gia` = ?, `soluong` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?
             WHERE `ma` = ?
         ");
-        $sql->bind_param('sissisii', $name, $price, $desc, $image, $category_id, $created_date, $soluong, $id);
+        $sql->bind_param('siissisi', $name, $price, $soluong, $desc, $image, $category_id, $created_date, $id);
         $result = $sql->execute();
         return $result;
     }

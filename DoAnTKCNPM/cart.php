@@ -1,5 +1,13 @@
 <?php
+function loadHeaderNav(string $path)
+{
+    include_once 'header_nav.php';
+}
+
+loadHeaderNav('header_nav.php'); 
+
 require_once 'SanPham_Database.php';
+
 session_start();
 
 // Khởi tạo giỏ hàng nếu nó chưa tồn tại
@@ -44,27 +52,20 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <link rel="stylesheet" href="css/style_cart.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
-
     <title>Giỏ hàng</title>
+    <style>
+        nav {
+            background: none;
+        }
+        nav {
+            padding-right: 135px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
-    <nav>
-        <div class="container">
-            <ul>
-                <li><a href=""><img style="width: 50px; height: auto;" src="" alt="Logo"></a></li>
-                <li id="adress-form"><a href="index.php">Home</a></li>
-                <li><input type="text" placeholder="Bạn tìm gì..."><i class="fa-solid fa-magnifying-glass"></i></li>
-                <li><a href="cart.php"><button><i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</button></a></li>
-                <li><a href="pay.html">Lịch sử<br>đơn hàng</a></li>
-                <li><a href="">Category</a></li>
-                <li><a href="">About us</a></li>
-                <li><a href="">Contact us</a></li>
-                <li><a href="">Login</a></li>
-            </ul>
-        </div>
-    </nav>
-    <section class="cart-section p-to-top">
+    <section class="cart-section p-to-top" style="padding-bottom: 80px; padding-top: 75px">
         <div class="cart-back">
             <i class="fa-solid fa-arrow-left"></i>
             <p>Giỏ hàng của bạn</p>
@@ -80,8 +81,11 @@ $sanphams = $sanpham_database->TatCaSanPham();
                         <div class="cart-list-item">
                             <div class="cart-list-item-product">
                                 <div class="cart-image">
+                                    <?php
+                                    // var_dump($item['anh']);
+                                    ?>
                                     <input style="position: absolute; top: 45%; left: 15px;" type="checkbox" id="checkbox" name="selected_products[]" value="<?= $id ?>">
-                                    <img src="img/dienthoai1.jpg" alt="<?= isset($item['ten']) ? htmlspecialchars($item['ten']) : '' ?>">
+                                    <img src="<?= $item['anh'] ?>" alt="">
                                 </div>
                                 <div class="format-product">
                                     <div class="info-product-on">
@@ -116,9 +120,20 @@ $sanphams = $sanpham_database->TatCaSanPham();
                     </div>
                 <?php
                 } ?>
+                <div class="cart-voucher" style=" box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-left: auto; margin-right: auto; width: 700px; height: 50px; background: rgba(200, 200, 200, 0.5); border-radius: 5px; cursor: pointer;">
+                    <form action="#">
+                        <div class="cart-voucher-item" style="display: flex; align-items: center; padding: 18px 15px; justify-content: space-between;">
+                            <div class="voucher-title"><i class="ri-discount-percent-line"></i>Voucher</div>
+                            <div class="voucher-name" style="display: flex; margin-right: 10px;">
+                                <p></p>
+                                <i class="ri-arrow-right-wide-line"></i>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="cart-total-money">
                     <div class="cart-text">
-                        <span class="cart-content">Tổng tiền: <p id="cart-total"><?= number_format(getCartTotal(), 0, '.', '.') ?></p><sup style="font-size: 15px;"> đ</sup></span>
+                        <span class="cart-content">Tổng tiền: <p id="cart-total"><?= number_format(getCartTotal()) ?></p><sup style="font-size: 15px;"> đ</sup></span>
                         <form action="pay.php" method="post">
                             <button type="submit" class="btn-pay">Mua ngay</button>
                         </form>
@@ -176,6 +191,9 @@ $sanphams = $sanpham_database->TatCaSanPham();
                 }
                 updateTotal(); // Cập nhật tổng nếu giá trị thay đổi
             });
+        });
+        document.querySelector('.fa-solid.fa-arrow-left').addEventListener(('click'), function() {
+            window.location.href = 'index.php';
         });
     </script>
 </body>

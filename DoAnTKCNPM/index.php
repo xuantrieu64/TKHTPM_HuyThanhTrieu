@@ -1,4 +1,5 @@
 <?php
+require_once 'header.php';
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header("Location: login.php");
@@ -26,58 +27,18 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <style>
+    </style>
 </head>
 
 <body>
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="#!">Start Bootstrap</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" href="#!">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#!">All Products</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <form action="cart.php">
-                        <button class="btn btn-outline-dark me-3" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
-                    <a href="logout.php" class="btn btn-danger">Đăng xuất</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <!-- dung de tao san pham quang cao -->
-        </div>
-    </header>
     <!-- Section-->
-    <section class="py-5">
+    <section class="py-5 d-flex justify-content-center">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php foreach ($sanphams as $item) { ?>
                     <form action="add_cart.php?masp" method="post">
-                        <div class="col mb-5">
+                        <div class="list col mb-5">
                             <div class="card h-100 shadow-sm border-0">
                                 <!-- Sale badge -->
                                 <?php if (!empty($item['giamgia'])) { ?>
@@ -88,7 +49,7 @@ $sanphams = $sanpham_database->TatCaSanPham();
                                 <input type="hidden" id="ma" name="ma" value="<?= $item['ma'] ?>">
                                 <input type="hidden" id="ten" name="ten" value="<?= $item['ten'] ?>">
                                 <input type="hidden" id="gia" name="gia" value="<?= $item['gia'] ?>">
-
+                                <input type="hidden" id="anh" name="anh" value="<?= $item['anh'] ?>">
                                 <!-- Product image -->
                                 <div class="position-relative overflow-hidden">
                                     <img class="card-img-top img-fluid" src="<?= htmlspecialchars($item['anh']) ?>" alt="<?= htmlspecialchars($item['ten']) ?>" style="object-fit: cover; height: 250px;">
@@ -138,11 +99,9 @@ $sanphams = $sanpham_database->TatCaSanPham();
     </section>
 
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
-        </div>
-    </footer>
+    <?php
+    require_once 'footer.php';
+    ?>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
