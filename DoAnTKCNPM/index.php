@@ -1,17 +1,18 @@
 <?php
-require_once 'header.php';
 session_start();
+require_once 'header.php';
+require_once 'SanPham_Database.php';
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header("Location: login.php");
     exit();
 }
-?>
 
-<?php
-require_once 'SanPham_Database.php';
 $sanpham_database = new SanPham_Database();
 $sanphams = $sanpham_database->TatCaSanPham();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,15 +21,23 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
-    <style>
-    </style>
+    <!-- FontAwesome Icon  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Remix Icon -->
+    <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Style Header  -->
+    <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
+    <!-- Style Footer  -->
+    <link rel="stylesheet" href="css/footer.css?v=<?= filemtime('css/footer.css') ?>">
+
 </head>
 
 <body>
@@ -106,6 +115,8 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <!-- Link JS Header -->
+    <script src="js/header.js"></script>
 </body>
 
 </html>

@@ -13,7 +13,6 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    //function getAllProducts($page, $perPage)
     // {
     // Tính số thứ tự trang bắt đầu
     // $firstLink = ($page - 1) * $perPage;
@@ -43,8 +42,8 @@ class SanPham_Database extends Database
         $sql->bind_param('i', $id);
         $sql->execute();
         $items = array();
-        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-        return $items[0];
+        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
+        return $items;
     }
     public function getRelatedProducts($category_id, $current_product_id, $limit = 4)
     {
@@ -54,13 +53,6 @@ class SanPham_Database extends Database
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    // public function addProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
-    //     $sql->bind_param("isissi", $id, $name, $price, $desc, $image, $category_id);
-    //     $resualt = $sql->execute();
-    //     return $resualt;
-    // }
     public function deleteProduct($id)
     {
         $sql = self::$connection->prepare("DELETE FROM `sanpham` WHERE ma=?");
@@ -101,12 +93,7 @@ class SanPham_Database extends Database
         return $items;
     }
     //Edit
-    // public function editProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $stmt = self::$connection->prepare("UPDATE Products SET id = ? name = ?, price = ?, desc = ?, image = ?, category_id = ? WHERE id = ?");
-    //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
-    //     return $stmt->execute();
-    // }
+
     public function editProduct($id, $name, $price, $soluong, $desc, $image, $category_id, $created_date)
     {
         $sql = self::$connection->prepare("
@@ -136,5 +123,15 @@ class SanPham_Database extends Database
         }
 
         return $data ?: []; // Trả về mảng rỗng nếu không có dữ liệu
+    }
+
+    //lay voucher
+    public function getVoucher()
+    {
+        $sql = self::$connection->prepare("SELECT * FROM magiamgia");
+        $sql->execute();
+        $result = array();
+        $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+        return $result;
     }
 }

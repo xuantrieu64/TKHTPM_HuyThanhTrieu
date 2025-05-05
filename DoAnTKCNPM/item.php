@@ -26,6 +26,10 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($product['ten']) ?> - Chi tiết sản phẩm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
+    
     <style>
         .product-img {
             object-fit: cover;
@@ -136,6 +140,7 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/header.js"></script>
 </body>
 
 </html>
