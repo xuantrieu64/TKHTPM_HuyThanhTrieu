@@ -7,6 +7,7 @@
     <title>Đăng nhập & Đăng ký</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <style>
         body {
             height: 100vh;
@@ -50,6 +51,22 @@
             background: #8f94fb;
         }
     </style>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -83,7 +100,12 @@
                         </div>
                         <div class="mb-3">
                             <label>Mật khẩu:</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <div class="input-group">
+                                <input type="password" name="password" id="password" class="form-control" required>
+                                <span class="input-group-text" onclick="togglePasswordVisibility()">
+                                    <i id="eyeIcon" class="bi bi-eye"></i>
+                                </span>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
                     </form>
@@ -100,7 +122,12 @@
                         </div>
                         <div class="mb-3">
                             <label>Mật khẩu:</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <div class="input-group">
+                                <input type="password" name="password" id="registerPassword" class="form-control" required>
+                                <span class="input-group-text" onclick="toggleRegisterPasswordVisibility()">
+                                    <i id="registerEyeIcon" class="bi bi-eye"></i>
+                                </span>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-success w-100">Đăng ký</button>
                     </form>
@@ -108,5 +135,21 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleRegisterPasswordVisibility() {
+            const passwordField = document.getElementById('registerPassword');
+            const eyeIcon = document.getElementById('registerEyeIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
 </body>
 </html>

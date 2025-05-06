@@ -134,4 +134,35 @@ class SanPham_Database extends Database
         $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $result;
     }
+    public function TongSoSanPham() {
+        $sql = "SELECT COUNT(*) as total FROM sanpham";
+        $result = self::$connection->query($sql); 
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+    public function getProductStock($productType = null)
+{
+    $sql = "SELECT ten, soluong FROM sanpham"; 
+    $conditions = [];
+
+    if ($productType) {
+        $conditions[] = "maloai = ?";
+    }
+
+    if ($conditions) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    $stmt = self::$connection->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: " . self::$connection->error);
+    }
+
+    if ($productType) {
+        $stmt->bind_param("s", $productType);
+    }
+
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
 }
