@@ -1,0 +1,73 @@
+.container {
+    margin: 0 50px;
+    color: white;
+}
+
+footer {
+    font-family: "Open Sans", sans-serif;
+    padding: 50px 0 0 12px;
+    background: #696687;
+    margin-top: 20px;
+    inset: 0;
+}
+
+footer .row-gird {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(4, 25%);
+
+}
+
+.footer-item p:first-child {
+    font-weight: bolder;
+    margin-bottom: 12px;
+}
+
+.footer-item p {
+    font-weight: lighter;
+    line-height: 32px;
+}
+
+.row-flex-product-detail {
+    justify-content: flex-start;
+}
+
+.information {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 40px 0 40px;
+    padding: 30px 0;
+}
+
+.information-text {
+    font-size: 20px;
+}
+
+.information-icon i {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.information-icon i {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 20px;
+    transition: 0.3s ease-in-out;
+    border-radius: 50%;
+}
+
+.information-icon i:nth-child(1):hover {
+    background: blue;
+}
+
+.information-icon i:nth-child(2):hover {
+    background: rgb(110, 210, 220);
+}
+
+.information-icon i:nth-child(3):hover {
+    background: rgb(234, 141, 157);
+}

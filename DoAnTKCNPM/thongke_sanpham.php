@@ -2,16 +2,17 @@
 require_once "SanPham_Database.php";
 $product_Database = new SanPham_Database();
 
-// Lấy dữ liệu số lượng sản phẩm đã bán
-$thongkeData = $product_Database->getProductSales();
+$productType = isset($_GET['productType']) ? $_GET['productType'] : null;
 
-// Chuyển dữ liệu thành JSON để dùng với Chart.js
+// Lấy dữ liệu số lượng sản phẩm hiện có
+$thongkeData = $product_Database->getProductStock($productType);
+
 $labels = [];
 $values = [];
 
 foreach ($thongkeData as $row) {
     $labels[] = $row['ten']; // Tên sản phẩm
-    $values[] = $row['soluong_ban']; // Số lượng đã bán
+    $values[] = $row['soluong']; // Số lượng hiện có
 }
 ?>
 
@@ -20,7 +21,7 @@ foreach ($thongkeData as $row) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Thống kê sản phẩm đã bán</title>
+    <title>Thống kê số lượng sản phẩm hiện có</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -46,7 +47,8 @@ foreach ($thongkeData as $row) {
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Thống kê số lượng sản phẩm đã bán</h2>
+        <h2 class="text-center mb-4">Thống kê số lượng sản phẩm hiện có</h2>
+        
         <canvas id="productChart"></canvas>
     </div>
 
@@ -64,7 +66,7 @@ foreach ($thongkeData as $row) {
                 data: {
                     labels: <?= json_encode($labels) ?>,
                     datasets: [{
-                        label: 'Số lượng đã bán',
+                        label: 'Số lượng hiện có',
                         data: <?= json_encode($values) ?>,
                         backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         borderColor: 'rgba(54, 162, 235, 1)',

@@ -3,10 +3,17 @@ session_start();
 require_once 'SanPham_Database.php';
 $product_database = new SanPham_Database();
 
-$products = $product_database->TatCaSanPham();
+$limit = 5; // Số sản phẩm trên mỗi trang
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$total_products = $product_database->TongSoSanPham(); 
+$all_products = $product_database->TatCaSanPham(); 
+
+$products = array_slice($all_products, $offset, $limit);
+
+$total_pages = ceil($total_products / $limit);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,20 +43,8 @@ $products = $product_database->TatCaSanPham();
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active fw-semibold" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="thongke_sanpham.php">Thống kê</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-semibold" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                        <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">All Products</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li><a class="dropdown-item" href="#">Popular Items</a></li>
-                            <li><a class="dropdown-item" href="#">New Arrivals</a></li>
-                        </ul>
-                    </li>
+                   
                 </ul>
                 <a class="btn btn-danger ms-3" href="logout.php">Đăng xuất</a>
             </div>
@@ -128,23 +123,19 @@ $products = $product_database->TatCaSanPham();
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-</section>
-  <div class="clearfix">
-                        <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                        <ul class="pagination">
-                            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                            <li class="page-item"><a href="#" class="page-link">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item"><a href="#" class="page-link">4</a></li>
-                            <li class="page-item"><a href="#" class="page-link">5</a></li>
-                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- Pagination -->
+        <div class="clearfix mt-4">
+                <div class="hint-text">Showing <b><?= count($products) ?></b> out of <b><?= $total_products ?></b> entries</div>
+                <ul class="pagination">
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
             </div>
+        </div>
+    </section>
 
 
 

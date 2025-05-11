@@ -9,7 +9,7 @@ function validateInput($name, $price, $category_id, $created_date) {
     if (empty($name)) return "Tên sản phẩm không được để trống.";
     if (!is_numeric($price) || $price < 0) return "Giá sản phẩm không hợp lệ.";
     if (!filter_var($category_id, FILTER_VALIDATE_INT)) return "Mã danh mục không hợp lệ.";
-    if (strtotime($created_date) === false) return "Ngày tạo không hợp lệ.";
+    if (!empty($created_date) && strtotime($created_date) === false) return "Ngày tạo không hợp lệ.";
     return null;
 }
 
@@ -17,7 +17,7 @@ function validateInput($name, $price, $category_id, $created_date) {
  * Xử lý tải ảnh lên (trả về đường dẫn ảnh hoặc lỗi)
  */
 function uploadImage($imageFile, $currentImage) {
-    if (isset($imageFile) && $imageFile['error'] == 0) {
+    if (isset($imageFile) && $imageFile['error'] === 0) {
         $target_dir = "img/";
         $imageFileType = strtolower(pathinfo($imageFile["name"], PATHINFO_EXTENSION));
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
@@ -33,17 +33,25 @@ function uploadImage($imageFile, $currentImage) {
         $newFileName = $target_dir . uniqid() . "." . $imageFileType;
 
         if (move_uploaded_file($imageFile["tmp_name"], $newFileName)) {
+            // Xóa ảnh cũ nếu có và là ảnh đã tải lên trước đó
+            if (!empty($currentImage) && strpos($currentImage, 'img/') !== false && file_exists($currentImage)) {
+                unlink($currentImage);
+            }
             return $newFileName; // Trả về đường dẫn ảnh mới
         } else {
             return "Lỗi khi tải ảnh lên.";
         }
     }
-    return $currentImage; // Giữ nguyên ảnh cũ nếu không có ảnh mới
+    return $currentImage; // Giữ nguyên ảnh cũ nếu không có ảnh mới được tải lên thành công
 }
 
 // 👉 **Xóa sản phẩm**
 if (isset($_GET['action']) && $_GET['action'] === "delete" && isset($_GET['id'])) {
     $id = $_GET['id'];
+    $product = $product_Database->getProductById($id);
+    if ($product && !empty($product['image']) && strpos($product['image'], 'img/') !== false && file_exists($product['image'])) {
+        unlink($product['image']);
+    }
     $product_Database->deleteProduct($id);
     header('Location: crud_product.php');
     exit;
@@ -59,7 +67,8 @@ if (isset($_POST['action'])) {
     $price = $_POST['price'] ?? "";
     $created_date = $_POST['created_date'] ?? "";
     $current_image = $_POST['current_image'] ?? "";
-    $soluong = $_POST['soluong']?? "";
+    $soluong = $_POST['soluong'] ?? "";
+
     // Kiểm tra đầu vào
     $error = validateInput($name, $price, $category_id, $created_date);
     if ($error) {
@@ -67,17 +76,23 @@ if (isset($_POST['action'])) {
         exit;
     }
 
-    // Xử lý ảnh
-    $image = uploadImage($_FILES['image'] ?? null, $current_image);
-    if (strpos($image, "Lỗi") !== false || strpos($image, "Chỉ chấp nhận") !== false) {
-        echo "<script>alert('$image'); window.history.back();</script>";
-        exit;
+    $image_to_update = $current_image; // Mặc định giữ nguyên ảnh cũ
+
+    // Kiểm tra xem có tệp ảnh mới được tải lên hay không
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+        // Nếu có ảnh mới, hãy tải lên và lấy đường dẫn mới
+        $image_result = uploadImage($_FILES['image'], $current_image);
+        if (strpos($image_result, "Lỗi") !== false || strpos($image_result, "Chỉ chấp nhận") !== false) {
+            echo "<script>alert('$image_result'); window.history.back();</script>";
+            exit;
+        }
+        $image_to_update = $image_result;
     }
 
     if ($action === "add") {
-        $product_Database->addProduct($id, $name, $price, $des, $image, $category_id, $created_date, $soluong);
+        $product_Database->addProduct($id, $name, $price, $soluong, $des, $image_to_update, $category_id, $created_date);
     } elseif ($action === "edit") {
-        $product_Database->editProduct($id, $name, $price, $des, $image, $category_id, $created_date, $soluong);
+        $product_Database->editProduct($id, $name, $price, $soluong, $des, $image_to_update, $category_id, $created_date);
     }
 
     header('Location: crud_product.php');

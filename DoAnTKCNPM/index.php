@@ -1,16 +1,24 @@
 <?php
 session_start();
+require_once 'header.php';
+require_once 'SanPham_Database.php';
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header("Location: login.php");
     exit();
 }
+
+$sanpham_database = new SanPham_Database();
+if (isset($_GET['maloai'])) {
+    $sanphams = $sanpham_database->SanPhamTheoLoai($_GET['maloai']);
+} elseif (isset($_GET['keyword'])) {
+    $sanphams = $sanpham_database->TimKiemSanPham($_GET['keyword']);
+} else {
+    $sanphams = $sanpham_database->TatCaSanPham();
+}
+
 ?>
 
-<?php
-require_once 'SanPham_Database.php';
-$sanpham_database = new SanPham_Database();
-$sanphams = $sanpham_database->TatCaSanPham();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,134 +27,102 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <!-- FontAwesome Icon  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Remix Icon -->
+    <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Style Header  -->
+    <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
+    <!-- Style Footer  -->
+    <link rel="stylesheet" href="css/footer.css?v=<?= filemtime('css/footer.css') ?>">
+
 </head>
 
 <body>
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="#!">Start Bootstrap</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" href="#!">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#!">All Products</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <form action="cart.php">
-                        <button class="btn btn-outline-dark me-3" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
-                    <a href="logout.php" class="btn btn-danger">Đăng xuất</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <!-- dung de tao san pham quang cao -->
-        </div>
-    </header>
     <!-- Section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <?php foreach ($sanphams as $item) { ?>
-                    <form action="add_cart.php?masp" method="post">
-                        <div class="col mb-5">
-                            <div class="card h-100 shadow-sm border-0">
-                                <!-- Sale badge -->
-                                <?php if (!empty($item['giamgia'])) { ?>
-                                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+    <section class="py-5 d-flex justify-content-center">
+        <div class="container mt-5">
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                <?php if (empty($sanphams)): ?>
+                    <div class="col-12 text-center">
+                        <p class="text-danger fw-bold">Không tìm thấy sản phẩm nào.</p>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($sanphams as $item): ?>
+                        <div class="col">
+                            <div class="card h-100 shadow-sm position-relative">
+                                <?php if (!empty($item['giamgia'])): ?>
+                                    <div class="badge bg-danger text-white position-absolute" style="top: 10px; right: 10px">
                                         -<?= $item['giamgia'] ?>%
                                     </div>
-                                <?php } ?>
-                                <input type="hidden" id="ma" name="ma" value="<?= $item['ma'] ?>">
-                                <input type="hidden" id="ten" name="ten" value="<?= $item['ten'] ?>">
-                                <input type="hidden" id="gia" name="gia" value="<?= $item['gia'] ?>">
+                                <?php endif; ?>
 
-                                <!-- Product image -->
-                                <div class="position-relative overflow-hidden">
-                                    <img class="card-img-top img-fluid" src="<?= htmlspecialchars($item['anh']) ?>" alt="<?= htmlspecialchars($item['ten']) ?>" style="object-fit: cover; height: 250px;">
-                                </div>
+                                <!-- Ảnh sản phẩm -->
+                                <img src="<?= htmlspecialchars($item['anh']) ?>" class="card-img-top mt-1" style="height: 220px; object-fit: contain;" alt="Ảnh sản phẩm">
 
-                                <!-- Product details -->
-                                <div class="card-body p-3 text-center">
-                                    <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-decoration-none text-dark">
-                                        <h5 class="fw-bolder"><?= htmlspecialchars($item['ten']) ?></h5>
-                                    </a>
-
-                                    <!-- Rating -->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                    </div>
-
-                                    <!-- Product price -->
-                                    <p class="text-danger fw-bold mb-1">
+                                <!-- Nội dung sản phẩm -->
+                                <div class="card-body text-center position-relative">
+                                    <h5 class="card-title mb-1"><?= htmlspecialchars($item['ten']) ?></h5>
+                                    <p class="card-text text-danger fw-bold mb-1">
                                         <?= number_format($item['gia'], 0, ',', '.') ?> VNĐ
                                     </p>
-
-                                    <!-- Product description -->
-                                    <?php $desc = substr($item['mota'], 0, 100); ?>
-                                    <p class="text-muted small mb-2">
-                                        <?= htmlspecialchars(substr($desc, 0, strrpos($desc, " "))) ?>...
-                                        <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-primary small">Xem thêm</a>
+                                    <p class="card-text text-muted small mb-2">
+                                        <?= htmlspecialchars(mb_substr($item['mota'], 0, 60)) ?>...
                                     </p>
+
+                                    <!-- Vùng click dẫn đến trang chi tiết -->
+                                    <a href="item.php?masp=<?= $item['ma'] ?>" class="stretched-link"></a>
                                 </div>
 
-                                <!-- Product actions -->
-                                <div class="card-footer p-3 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-outline-dark flex-grow-1 me-2">🛒 Thêm vào giỏ</button>
-                                        <a class="btn btn-dark flex-grow-1" href="#">🛍️ Mua ngay</a>
+                                <!-- Footer: nút mua và giỏ hàng -->
+                                <div class="card-footer bg-white border-top-0 z-1 px-3 pb-3">
+                                    <div class="d-flex gap-2">
+                                        <!-- Nút Thêm vào giỏ -->
+                                        <form action="add_cart.php" method="post" class="flex-grow-1" onsubmit="event.stopPropagation();">
+                                            <input type="hidden" name="ma" value="<?= $item['ma'] ?>">
+                                            <input type="hidden" name="ten" value="<?= $item['ten'] ?>">
+                                            <input type="hidden" name="gia" value="<?= $item['gia'] ?>">
+                                            <input type="hidden" name="anh" value="<?= $item['anh'] ?>">
+                                            <button class="btn btn-outline-primary w-100 btn-sm" type="submit">🛒 Thêm</button>
+                                        </form>
+
+                                        <!-- Nút Mua Ngay -->
+                                        <form action="add_cart.php" method="post" class="flex-grow-1" onsubmit="event.stopPropagation();">
+                                            <input type="hidden" name="ma" value="<?= $item['ma'] ?>">
+                                            <input type="hidden" name="ten" value="<?= $item['ten'] ?>">
+                                            <input type="hidden" name="gia" value="<?= $item['gia'] ?>">
+                                            <input type="hidden" name="anh" value="<?= $item['anh'] ?>">
+                                            <button class="btn btn-outline-primary w-100 btn-sm" type="submit">🛍️ Mua ngay</button>
+                                        </form>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                    </form>
-                <?php } ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
-        </div>
-    </footer>
+    <?php
+    require_once 'footer.php';
+    ?>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <!-- Link JS Header -->
+    <script src="js/header.js"></script>
 </body>
 
 </html>

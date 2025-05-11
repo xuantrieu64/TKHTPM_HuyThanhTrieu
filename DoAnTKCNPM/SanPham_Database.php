@@ -13,7 +13,6 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    //function getAllProducts($page, $perPage)
     // {
     // Tính số thứ tự trang bắt đầu
     // $firstLink = ($page - 1) * $perPage;
@@ -43,8 +42,8 @@ class SanPham_Database extends Database
         $sql->bind_param('i', $id);
         $sql->execute();
         $items = array();
-        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-        return $items[0];
+        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
+        return $items;
     }
     public function getRelatedProducts($category_id, $current_product_id, $limit = 4)
     {
@@ -54,13 +53,6 @@ class SanPham_Database extends Database
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    // public function addProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $sql = self::$connection->prepare("INSERT INTO product VALUE (?, ?, ?, ?, ?, ?)");
-    //     $sql->bind_param("isissi", $id, $name, $price, $desc, $image, $category_id);
-    //     $resualt = $sql->execute();
-    //     return $resualt;
-    // }
     public function deleteProduct($id)
     {
         $sql = self::$connection->prepare("DELETE FROM `sanpham` WHERE ma=?");
@@ -69,13 +61,13 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    public function addProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
+    public function addProduct($id, $name, $price, $soluong, $desc, $image, $category_id, $created_date)
     {
         $sql = self::$connection->prepare("
-            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `mota`, `anh`, `maloai`, `ngaytao`, `soluong`) 
+            INSERT INTO `sanpham`(`ma`, `ten`, `gia`, `soluong`, `mota`, `anh`, `maloai`, `ngaytao`) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $sql->bind_param('isissisi', $id, $name, $price, $desc, $image, $category_id, $created_date, $soluong);
+        $sql->bind_param('isiissis', $id, $name, $price, $soluong, $desc, $image, $category_id, $created_date);
         $result = $sql->execute();
         return $result;
     }
@@ -101,20 +93,15 @@ class SanPham_Database extends Database
         return $items;
     }
     //Edit
-    // public function editProduct($id, $name, $price, $desc, $image, $category_id)
-    // {
-    //     $stmt = self::$connection->prepare("UPDATE Products SET id = ? name = ?, price = ?, desc = ?, image = ?, category_id = ? WHERE id = ?");
-    //     $stmt->bind_param("isissii", $name, $price, $desc, $image, $category_id, $id);
-    //     return $stmt->execute();
-    // }
-    public function editProduct($id, $name, $price, $desc, $image, $category_id, $created_date, $soluong)
+
+    public function editProduct($id, $name, $price, $soluong, $desc, $image, $category_id, $created_date)
     {
         $sql = self::$connection->prepare("
             UPDATE `sanpham` 
-            SET `ten` = ?, `gia` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?, `soluong` = ?
+            SET `ten` = ?, `gia` = ?, `soluong` = ?, `mota` = ?, `anh` = ?, `maloai` = ?, `ngaytao` = ?
             WHERE `ma` = ?
         ");
-        $sql->bind_param('sissisii', $name, $price, $desc, $image, $category_id, $created_date, $soluong, $id);
+        $sql->bind_param('siissisi', $name, $price, $soluong, $desc, $image, $category_id, $created_date, $id);
         $result = $sql->execute();
         return $result;
     }
@@ -136,5 +123,129 @@ class SanPham_Database extends Database
         }
 
         return $data ?: []; // Trả về mảng rỗng nếu không có dữ liệu
+    }
+
+    //lay voucher
+    public function getVoucher()
+    {
+        $sql = self::$connection->prepare("SELECT * FROM magiamgia");
+        $sql->execute();
+        $result = array();
+        $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+        return $result;
+    }
+    public function TongSoSanPham()
+    {
+        $sql = "SELECT COUNT(*) as total FROM sanpham";
+        $result = self::$connection->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+    public function getProductStock($productType = null)
+    {
+        $sql = "SELECT ten, soluong FROM sanpham";
+        $conditions = [];
+
+        if ($productType) {
+            $conditions[] = "maloai = ?";
+        }
+
+        if ($conditions) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $stmt = self::$connection->prepare($sql);
+        if (!$stmt) {
+            die("Prepare failed: " . self::$connection->error);
+        }
+
+        if ($productType) {
+            $stmt->bind_param("s", $productType);
+        }
+
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+    //Search
+    public function TimKiemSanPham($keyword)
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE ten LIKE ?");
+        $search = "%" . $keyword . "%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
+    }
+    public function TatCaLoaiSanPham()
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM loai");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $loais = [];
+        while ($row = $result->fetch_assoc()) {
+            $loais[] = $row;
+        }
+        $stmt->close();
+        return $loais;
+    }
+
+
+    public function SanPhamTheoLoai($maloai)
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE maloai = ?");
+        $stmt->bind_param("i", $maloai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
+    }
+
+    //Đánh giá sản phẩm
+    public function getDanhGiaByMaSP($masp)
+    {
+        $stmt = self::$connection->prepare("
+        SELECT danhgiasanpham.*, users.username 
+            FROM danhgiasanpham 
+            JOIN users ON danhgiasanpham.user_id = users.id 
+            WHERE danhgiasanpham.sp_id = ? 
+            ORDER BY danhgiasanpham.ngaydanhgia DESC
+    ");
+        $stmt->bind_param("i", $masp);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $reviews = [];
+        while ($row = $result->fetch_assoc()) {
+            $reviews[] = $row;
+        }
+
+        $stmt->close();
+        return $reviews;
+    }
+
+    //trung bình số sao
+
+    public function getAverageRating($masp)
+    {
+        $stmt = self::$connection->prepare("
+        SELECT ROUND(AVG(sao), 1) AS avg_rating, COUNT(*) AS total_reviews
+        FROM danhgiasanpham 
+        WHERE sp_id = ?
+    ");
+        $stmt->bind_param("i", $masp);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        return $result; // ['avg_rating' => ..., 'total_reviews' => ...]
     }
 }

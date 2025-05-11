@@ -20,14 +20,14 @@
             <input type="hidden" name="action" value="add">
             <div class="mb-3">
                 <label for="name" class="form-label">Mã sản phẩm:</label>
-                <input type="text" class="form-control" id="id" name="id" required>
+                <input type="text" class="form-control" id="id" name="id">
             </div>
             <!-- Product Name -->
             <div class="mb-3">
                 <label for="name" class="form-label">Tên sản phẩm:</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
-            
+
             <!-- Product Price -->
             <div class="mb-3">
                 <label for="productPrice" class="form-label">Giá:</label>
@@ -42,7 +42,7 @@
                 <label for="productDescription" class="form-label">Mô tả:</label>
                 <textarea class="form-control" id="des" name="des" required></textarea>
             </div>
-            
+
             <!-- Product Image -->
             <div class="mb-3">
                 <label for="image" class="form-label">Hình ảnh:</label>
