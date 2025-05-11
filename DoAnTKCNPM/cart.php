@@ -329,10 +329,10 @@ $sanphams = $sanpham_database->TatCaSanPham();
 
                 return {
                     id: productId,
-                    name: productName,
+                    name: productName, 
                     price,
                     quantity,
-                    image // Bắt buộc có dòng này
+                    image
                 };
             });
 

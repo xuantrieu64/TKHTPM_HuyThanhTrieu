@@ -12,7 +12,7 @@ $categories = $category_database->getAllLoai();
             <li id="adress-form"><a href="index.php">Home</a></li>
             <li><input type="text" placeholder="Bạn tìm gì..."><i class="fa-solid fa-magnifying-glass"></i></li>
             <li><a href="cart.php"><button><i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</button></a></li>
-            <li><a href="#">Lịch sử<br>đơn hàng</a></li>
+            <li><a href="orders.php">Lịch sử<br>đơn hàng</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle">Danh mục</a>
                 <ul class="dropdown-menu">

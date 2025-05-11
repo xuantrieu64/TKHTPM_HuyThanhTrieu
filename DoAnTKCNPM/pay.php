@@ -70,118 +70,131 @@ if (isset($_POST['checkout_data'])) {
     <link rel="stylesheet" href="css/pay.css?v=<?= filemtime('css/pay.css') ?>">
     <title>Document</title>
     <style>
-       
+
     </style>
 </head>
 
 <body>
     <div class="pay-section" style="min-height: 100vh;">
         <div class="pay-section-container">
-            <div class="row-grid">
-                <div class="pay-section-left">
-                    <h2>Thông tin sản phẩm</h2>
-                    <?php foreach ($products as $product): ?>
-                        <div class="pay-section-detail" style="padding: 20px;">
-                            <div class="pay-section-detail-content">
-                                <img src="<?= $product['image'] ?>" alt="" style="width: 100px;">
-                                <div class="pay-information">
-                                    <p style="margin: 0 0 20px 0; font-size: 15px;"><?= $product['name'] ?></p>
-                                    <p style="margin: 20px 0 0 0; "><?= number_format($product['price'], 0, ',', '.') ?> VNĐ</p>
-                                </div>
-                                <p>SL: <?= $product['quantity'] ?></p>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div class="pay-section-right">
-                    <h2>Thông tin giao hàng</h2>
-                    <!-- Hiển thị thông tin đã nhập -->
-                    <div class="pay-infor-user">
-                        <div class="pay-wrapper">
-                            <div class="pay-infor-personal">
-                                <p><i class="ri-map-pin-line" style="margin-right: 5px;"></i>trieu</p>
-                                <p>123456789</p>
-                            </div>
-                            <div class="pay-infor-address">
-                                <p>123 nguyen hue</p>
-                            </div>
-                        </div>
-                        <div id="adress-form" class="pay-icon-right">
-                            <i class="ri-arrow-drop-right-line"></i>
-                        </div>
-                    </div>
-                    <!--Kết thúc hiển thị thông tin đã nhập -->
-
-                    <!-- Nhập thông tin -->
-                    <div class="adress-form" style="display: none;">
-                        <div class="adress-form-content">
-                            <h2>Chọn địa chỉ nhận hàng <span id="adress-close">X Đóng</span></h2>
-                            <div class="form-list">
-                                <p>
-                                    Chọn đầy đủ địa chỉ nhận hàng để biết chính xác thời gian giao
-                                </p>
-                                <input class="address-input" type="text" id="name" name="name" placeholder="Nhập họ tên">
-                                <input class="address-input" type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại">
-                                <input class="address-input" type="text" id="adress" name="adress" placeholder="Nhập địa chỉ của bạn">
-                                <button type="button" class="submit-address">Xác nhận</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Kết thúc nhập thông tin -->
-
-                    <!-- Chọn voucher, phương thức thanh toán -->
-                    <div class="pay-section-function">
-                        <div class="pay-voucher" style="margin: 5px 0;">
-                            <div class="pay-voucher-title">Voucher</div>
-                            <div class="pay-deal">
-                                <div class="pay-voucher-name">
-                                    <?= isset($voucher['name']) ? $voucher['name'] : 'Không có voucher' ?>
-                                </div>
-                                <div style="font-size: 20px; display: none;" id="voucher-form" class="voucher-icon">
-                                    <?= isset($voucher['phantram']) ? $voucher['phantram'] . '% Giảm' : '0% Giảm' ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pay-method" style="margin: 5px 0;">
-                            <div class="pay-method-title">Phương thức thanh toán</div>
-                            <div class="pay-method-money-wrapper">
-                                <div class="pay-method-name" id="selected-method">Momo</div>
-                                <div style="font-size: 20px;" id="method-pay-form" class="method-pay-icon">
-                                    <i class="ri-arrow-drop-right-line"></i>
-                                </div>
-                            </div>
-                            <div class="method-pay-form" style="display: none;">
-                                <div class="pay-form-content">
-                                    <h2>Chọn phương thức thanh toán <span id="pay-close">X Đóng</span></h2>
-                                    <div class="payment-options" style="padding: 20px;">
-                                        <div class="payment-option">
-                                            <input type="radio" id="thanhtoankhinhanhang" name="method-pay">
-                                            <label for="thanhtoankhinhanhang" class="payment-label">Thanh toán khi nhận hàng</label>
-                                        </div>
-                                        <div class="payment-option">
-                                            <input type="radio" id="nganhang" name="method-pay">
-                                            <label for="nganhang" class="payment-label">Ngân hàng</label>
-                                        </div>
-                                        <div class="payment-option">
-                                            <input type="radio" id="momo" name="method-pay">
-                                            <label for="momo" class="payment-label">Momo</label>
-                                        </div>
+            <form action="order_process.php" method="POST">
+                <div class="row-grid">
+                    <div class="pay-section-left">
+                        <h2>Thông tin sản phẩm</h2>
+                        <?php foreach ($products as $product): ?>
+                            <div class="pay-section-detail" style="padding: 20px;">
+                                <div class="pay-section-detail-content">
+                                    <img src="<?= $product['image'] ?>" alt="" style="width: 100px;">
+                                    <div class="pay-information">
+                                        <p style="margin: 0 0 20px 0; font-size: 15px;"><?= $product['name'] ?></p>
+                                        <p style="margin: 20px 0 0 0; "><?= number_format($product['price'], 0, ',', '.') ?> VNĐ</p>
                                     </div>
-                                    <button type="submit" class="btn-pay">Xác nhận</button>
+                                    <p>SL: <?= $product['quantity'] ?></p>
+                                </div>
+                            </div>
+                            <input type="hidden" name="products[<?= $product['id'] ?>][id]" value="<?= $product['id'] ?>">
+                            <input type="hidden" name="products[<?= $product['id'] ?>][price]" value="<?= $product['price'] ?>">
+                            <input type="hidden" name="products[<?= $product['id'] ?>][quantity]" value="<?= $product['quantity'] ?>">
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="pay-section-right">
+                        <h2>Thông tin giao hàng</h2>
+                        <!-- Hiển thị thông tin đã nhập -->
+                        <div class="pay-infor-user">
+                            <div class="pay-wrapper">
+                                <div class="pay-infor-personal">
+                                    <p><i class="ri-map-pin-line" style="margin-right: 5px;"></i><?= $name ?></p>
+                                    <p><?= $phone ?></p>
+                                </div>
+                                <div class="pay-infor-address">
+                                    <p><?= $adress ?></p>
+                                </div>
+                            </div>
+                            <div id="adress-form" class="pay-icon-right">
+                                <i class="ri-arrow-drop-right-line"></i>
+                            </div>
+                        </div>
+                        <!--Kết thúc hiển thị thông tin đã nhập -->
+
+                        <!-- Nhập thông tin -->
+                        <div class="adress-form" style="display: none;">
+                            <div class="adress-form-content">
+                                <h2>Chọn địa chỉ nhận hàng <span id="adress-close">X Đóng</span></h2>
+                                <div class="form-list">
+                                    <p>
+                                        Chọn đầy đủ địa chỉ nhận hàng để biết chính xác thời gian giao
+                                    </p>
+                                    <input class="address-input" type="text" id="name" name="name" placeholder="Nhập họ tên">
+                                    <input class="address-input" type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại">
+                                    <input class="address-input" type="text" id="adress" name="adress" placeholder="Nhập địa chỉ của bạn">
+                                    <input type="hidden" name="name" value="<?= htmlspecialchars($name) ?>">
+                                    <input type="hidden" name="phone" value="<?= htmlspecialchars($phone) ?>">
+                                    <input type="hidden" name="adress" value="<?= htmlspecialchars($adress) ?>">
+
+                                    <button type="button" class="submit-address">Xác nhận</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="pay-order">
-                            <div class="pay-total-money">
-                                Tổng cộng: <?= number_format($total, 0, ',', '.') ?> đồng
-                            </div>
+                        <!--Kết thúc nhập thông tin -->
 
-                            <button type="submit">Đặt hàng</button>
+                        <!-- Chọn voucher, phương thức thanh toán -->
+                        <div class="pay-section-function">
+                            <div class="pay-voucher" style="margin: 5px 0;">
+                                <div class="pay-voucher-title">Voucher</div>
+                                <div class="pay-deal">
+                                    <div class="pay-voucher-name">
+                                        <?= isset($voucher['name']) ? $voucher['name'] : 'Không có voucher' ?>
+                                    </div>
+                                    <div style="font-size: 20px; display: none;" id="voucher-form" class="voucher-icon">
+                                        <?= isset($voucher['phantram']) ? $voucher['phantram'] . '% Giảm' : '0% Giảm' ?>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="voucher_name" value="<?= isset($voucher['name']) ? $voucher['name'] : '' ?>">
+                                <input type="hidden" name="voucher_discount" value="<?= isset($voucher['discount']) ? $voucher['discount'] : 0 ?>">
+
+                            </div>
+                            <div class="pay-method" style="margin: 5px 0;">
+                                <div class="pay-method-title">Phương thức thanh toán</div>
+                                <div class="pay-method-money-wrapper">
+                                    <div class="pay-method-name" id="selected-method">Momo</div>
+                                    <div style="font-size: 20px;" id="method-pay-form" class="method-pay-icon">
+                                        <i class="ri-arrow-drop-right-line"></i>
+                                    </div>
+                                </div>
+                                <div class="method-pay-form" style="display: none;">
+                                    <div class="pay-form-content">
+                                        <h2>Chọn phương thức thanh toán <span id="pay-close">X Đóng</span></h2>
+                                        <div class="payment-options" style="padding: 20px;">
+                                            <div class="payment-option">
+                                                <input type="radio" id="thanhtoankhinhanhang" name="method-pay">
+                                                <label for="thanhtoankhinhanhang" class="payment-label">Thanh toán khi nhận hàng</label>
+                                            </div>
+                                            <div class="payment-option">
+                                                <input type="radio" id="nganhang" name="method-pay">
+                                                <label for="nganhang" class="payment-label">Ngân hàng</label>
+                                            </div>
+                                            <div class="payment-option">
+                                                <input type="radio" id="momo" name="method-pay">
+                                                <label for="momo" class="payment-label">Momo</label>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="method-pay" id="method-pay-hidden" value="Momo">
+
+                                        <button type="button" class="btn-pay">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pay-order">
+                                <div class="pay-total-money">
+                                    Tổng cộng: <?= number_format($total, 0, ',', '.') ?> đồng
+                                </div>
+                                <button type="submit">Đặt hàng</button>
+                            </div>
                         </div>
+                        <!-- Kết thúc chọn voucher, phương thức thanh toán -->
                     </div>
-                    <!-- Kết thúc chọn voucher, phương thức thanh toán -->
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -243,15 +256,11 @@ if (isset($_POST['checkout_data'])) {
         });
 
         document.querySelector('.btn-pay').addEventListener('click', function() {
-            // Lấy thông tin phương thức thanh toán đã chọn
-            const selectedMethod = document.querySelector('input[name="method-pay"]:checked');
-
-            if (selectedMethod) {
-                const methodName = selectedMethod.nextElementSibling.textContent.trim();
-                // Cập nhật hiển thị phương thức thanh toán đã chọn
+            const selectedMethodInput = document.querySelector('input[name="method-pay"]:checked');
+            if (selectedMethodInput) {
+                const methodName = selectedMethodInput.nextElementSibling.textContent.trim();
                 document.querySelector('.pay-method-name').textContent = methodName;
-
-                // Đóng form phương thức thanh toán sau khi nhấn xác nhận
+                document.getElementById('method-pay-hidden').value = methodName;
                 document.querySelector('.method-pay-form').style.display = 'none';
             } else {
                 alert('Vui lòng chọn phương thức thanh toán!');
