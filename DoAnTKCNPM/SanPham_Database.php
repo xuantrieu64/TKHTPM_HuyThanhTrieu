@@ -165,4 +165,40 @@ class SanPham_Database extends Database
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
+public function getProductOders($productType = null, $startDate = null, $endDate = null)
+{
+    $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1=1";
+    
+    if ($productType) {
+        $sql .= " AND ma_loai = ?";
+    }
+    if ($startDate && $endDate) {
+        $sql .= " AND sold_date BETWEEN ? AND ?";
+    }
+    $sql .= " ORDER BY soluong DESC";
+
+    $stmt = self::$connection->prepare($sql);
+    if (!$stmt) {
+        die("Lỗi truy vấn: " . self::$connection->error);
+    }
+
+    // Bind parameters
+    if ($productType && $startDate && $endDate) {
+        $stmt->bind_param("iss", $productType, $startDate, $endDate);
+    } elseif ($productType) {
+        $stmt->bind_param("s", $productType);
+    } elseif ($startDate && $endDate) {
+        $stmt->bind_param("ss", $startDate, $endDate);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    return $data ?: []; 
+}
 }

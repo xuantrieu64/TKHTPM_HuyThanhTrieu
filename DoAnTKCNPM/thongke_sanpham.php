@@ -2,17 +2,19 @@
 require_once "SanPham_Database.php";
 $product_Database = new SanPham_Database();
 
+// Lấy dữ liệu số lượng sản phẩm đã bán
 $productType = isset($_GET['productType']) ? $_GET['productType'] : null;
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
-// Lấy dữ liệu số lượng sản phẩm hiện có
-$thongkeData = $product_Database->getProductStock($productType);
+$salesData = $product_Database->getProductOders($productType, $startDate, $endDate);
 
-$labels = [];
-$values = [];
+$salesLabels = [];
+$salesValues = [];
 
-foreach ($thongkeData as $row) {
-    $labels[] = $row['ten']; // Tên sản phẩm
-    $values[] = $row['soluong']; // Số lượng hiện có
+foreach ($salesData as $row) {
+    $salesLabels[] = $row['ten']; // Tên sản phẩm
+    $salesValues[] = $row['soluong']; // Số lượng đã bán
 }
 ?>
 
@@ -21,7 +23,7 @@ foreach ($thongkeData as $row) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Thống kê số lượng sản phẩm hiện có</title>
+    <title>Thống kê số lượng sản phẩm đã bán</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -45,11 +47,28 @@ foreach ($thongkeData as $row) {
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Thống kê số lượng sản phẩm hiện có</h2>
-        
-        <canvas id="productChart"></canvas>
+        <h2 class="text-center mb-4">Thống kê số lượng sản phẩm đã bán</h2>
+
+        <form method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="productType" class="form-label">Mã loại sản phẩm</label>
+                    <input type="number" name="productType" id="productType" class="form-control" placeholder="Nhập mã loại">
+                </div>
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">Ngày bắt đầu</label>
+                    <input type="date" name="startDate" id="startDate" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">Ngày kết thúc</label>
+                    <input type="date" name="endDate" id="endDate" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Lọc dữ liệu</button>
+        </form>
+
+        <canvas id="salesChart"></canvas>
     </div>
 
     <!-- Footer -->
@@ -57,19 +76,18 @@ foreach ($thongkeData as $row) {
         <p class="mb-0">© 2025 Admin Panel. All rights reserved.</p>
     </footer>
 
-    <!-- Chart Script -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var ctx = document.getElementById('productChart').getContext('2d');
-            var productChart = new Chart(ctx, {
-                type: 'bar', // Biểu đồ cột
+            var ctx = document.getElementById('salesChart').getContext('2d');
+            var salesChart = new Chart(ctx, {
+                type: 'bar', 
                 data: {
-                    labels: <?= json_encode($labels) ?>,
+                    labels: <?= json_encode($salesLabels) ?>,
                     datasets: [{
-                        label: 'Số lượng hiện có',
-                        data: <?= json_encode($values) ?>,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        label: 'Số lượng đã bán',
+                        data: <?= json_encode($salesValues) ?>,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     }]
                 },
