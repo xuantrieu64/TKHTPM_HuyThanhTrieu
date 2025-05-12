@@ -95,7 +95,7 @@
 /* End address form  */
 
 .pay-section {
-    padding-top: 90px;
+    padding-top: 10px;
     background-color: #f0f0f0;
     font-family: sans-serif;   
 }
@@ -183,7 +183,6 @@
 
 .pay-infor-personal {
     display: flex;
-    margin-bottom: 8px;
 }
 
 .pay-infor-personal p {

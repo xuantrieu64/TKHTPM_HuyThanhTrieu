@@ -30,6 +30,8 @@ $sanphams = $sanpham_database->TatCaSanPham();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style_cart.css?v=<?= filemtime('css/style_cart.css') ?>">
     <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
@@ -58,7 +60,7 @@ $sanphams = $sanpham_database->TatCaSanPham();
 </head>
 
 <body>
-    <section class="cart-section p-to-top" style="padding-bottom: 80px; padding-top: 75px">
+    <section class="cart-section p-to-top">
         <div class="container">
             <div class="row-flex row-flex-product-cart">
                 <p class="heading-text">Giỏ hàng</p>
@@ -146,7 +148,7 @@ $sanphams = $sanpham_database->TatCaSanPham();
                     </div>
                     <div class="cart-total-money">
                         <div class="cart-text">
-                            <span class="cart-content">Tổng tiền: <p id="cart-total">0</p><sup style="font-size: 15px;"> VND</sup></span>
+                            <span class="cart-content">Tổng tiền: <p id="cart-total">0</p> VND</span>
                             <!-- Thêm input ẩn để gửi danh sách sản phẩm -->
                             <button type="submit" class="btn-pay">Mua ngay</button>
 
@@ -329,7 +331,7 @@ $sanphams = $sanpham_database->TatCaSanPham();
 
                 return {
                     id: productId,
-                    name: productName, 
+                    name: productName,
                     price,
                     quantity,
                     image

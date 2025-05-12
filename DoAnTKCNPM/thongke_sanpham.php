@@ -20,6 +20,7 @@ foreach ($salesData as $row) {
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +28,7 @@ foreach ($salesData as $row) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -38,8 +40,8 @@ foreach ($salesData as $row) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="crud_product.php">Quản lý sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="crud_order.php">Quản lý đơn hàng</a></li>
                     <li class="nav-item"><a class="nav-link active" href="thongke.php">Thống kê</a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.php">Đăng xuất</a></li>
                 </ul>
@@ -77,10 +79,10 @@ foreach ($salesData as $row) {
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById('salesChart').getContext('2d');
             var salesChart = new Chart(ctx, {
-                type: 'bar', 
+                type: 'bar',
                 data: {
                     labels: <?= json_encode($salesLabels) ?>,
                     datasets: [{
@@ -94,7 +96,9 @@ foreach ($salesData as $row) {
                 options: {
                     responsive: true,
                     scales: {
-                        y: { beginAtZero: true }
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });
@@ -105,4 +109,5 @@ foreach ($salesData as $row) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

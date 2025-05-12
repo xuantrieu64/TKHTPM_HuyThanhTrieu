@@ -1,4 +1,5 @@
 <?php
+require_once 'header_nav.php';
 require_once 'SanPham_Database.php';
 session_start();
 
@@ -11,12 +12,19 @@ $product_id = isset($_GET['masp']) ? intval($_GET['masp']) : 0;
 
 // Kiểm tra nếu không có sản phẩm
 $product = $product_database->getProductById($product_id);
+$reviews = $product_database->getDanhGiaByMaSP($product_id);
 if (!$product) {
     die("<h1 class='text-center text-danger mt-5'>Sản phẩm không tìm thấy!</h1>");
 }
 
 // Lấy danh sách sản phẩm liên quan
 $related_products = $product_database->getRelatedProducts($product['maloai'], $product_id);
+
+
+$rating_data = $product_database->getAverageRating($product_id);
+$average_rating = $rating_data['avg_rating'] ?? 0;
+$total_reviews = $rating_data['total_reviews'] ?? 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -29,7 +37,7 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
-    
+
     <style>
         .product-img {
             object-fit: cover;
@@ -51,41 +59,6 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
 </head>
 
 <body>
-    <!-- Navigation -->
-    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.php">Shop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" href="index.php">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">Danh mục</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Tất cả sản phẩm</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Bán chạy</a></li>
-                            <li><a class="dropdown-item" href="#">Hàng mới</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i> Giỏ hàng
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav> -->
-    <?php
-    require_once 'header_nav.php';
-    ?>
     <!-- Chi tiết sản phẩm -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
@@ -97,6 +70,17 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
                     </div>
                     <div class="col-md-6">
                         <h1 class="display-5 fw-bolder"><?= htmlspecialchars($product['ten']) ?></h1>
+                        <?php if ($total_reviews > 0): ?>
+                            <h4 class="mb-3">
+                                <span class="text-warning">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="ri-star-<?= $i <= $average_rating ? 'fill' : ($i - 0.5 <= $average_rating ? 'half-line' : 'line') ?>"></i>
+                                    <?php endfor; ?>
+                                </span>
+                                (<?= $average_rating ?>/5 sao từ <?= $total_reviews ?> đánh giá)
+                            </h4>
+                        <?php endif; ?>
+
                         <input type="hidden" name="ten" value="<?= htmlspecialchars($product['ten']) ?>">
                         <div class="fs-5 mb-3">
                             <span class="text-danger fw-bold"><?= number_format($product['gia'], 0, ',', '.') ?> VNĐ</span>
@@ -115,6 +99,32 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
             </form>
         </div>
     </section>
+
+
+    <!-- Đánh giá sản phẩm -->
+    <section class="container mt-5">
+        <h3 class="fw-bold mb-4">Đánh giá sản phẩm</h3>
+        <?php if (empty($reviews)): ?>
+            <p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
+        <?php else: ?>
+            <?php foreach ($reviews as $review): ?>
+                <div class="mb-3 p-3 border rounded shadow-sm bg-light">
+                    <div class="d-flex justify-content-between">
+                        <strong><?= htmlspecialchars($review['username']) ?></strong>
+                        <small class="text-muted"><?= date('d/m/Y', strtotime($review['ngaydanhgia'])) ?></small>
+                    </div>
+                    <div class="text-warning mb-1">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <i class="ri-star-<?= $i <= $review['sao'] ? 'fill' : 'line' ?>"></i>
+                        <?php endfor; ?>
+                    </div>
+                    <p class="mb-0"><?= nl2br(htmlspecialchars($review['noidung'])) ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </section>
+
+
 
     <!-- Sản phẩm liên quan -->
     <section class="py-5 bg-light">
@@ -138,6 +148,9 @@ $related_products = $product_database->getRelatedProducts($product['maloai'], $p
             </div>
         </div>
     </section>
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/header.js"></script>

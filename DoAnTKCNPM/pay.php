@@ -66,6 +66,7 @@ if (isset($_POST['checkout_data'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
     <link rel="stylesheet" href="css/pay.css?v=<?= filemtime('css/pay.css') ?>">
     <title>Document</title>
@@ -103,11 +104,11 @@ if (isset($_POST['checkout_data'])) {
                         <div class="pay-infor-user">
                             <div class="pay-wrapper">
                                 <div class="pay-infor-personal">
-                                    <p><i class="ri-map-pin-line" style="margin-right: 5px;"></i><?= $name ?></p>
-                                    <p><?= $phone ?></p>
+                                    <p class="m-0"><i class="ri-map-pin-line" style="margin-right: 5px;"></i><?= $name ?></p>
+                                    <p class="m-0"><?= $phone ?></p>
                                 </div>
                                 <div class="pay-infor-address">
-                                    <p><?= $adress ?></p>
+                                    <p class="m-0 pl-3"><?= $adress ?></p>
                                 </div>
                             </div>
                             <div id="adress-form" class="pay-icon-right">

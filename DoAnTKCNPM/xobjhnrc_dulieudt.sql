@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2025 at 10:54 AM
+-- Generation Time: May 12, 2025 at 08:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,6 +42,46 @@ CREATE TABLE `chamsoc` (
 
 INSERT INTO `chamsoc` (`ma_chamsoc`, `ho_ten`, `email`, `van_de`, `sdt`, `y_kien`) VALUES
 (1, 'Tran van xuan trieu', 'trieu@gmail.com', 'rrf', '1234567', 'fffff');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `danhgiasanpham`
+--
+
+CREATE TABLE `danhgiasanpham` (
+  `madanhgia` int(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `sp_id` int(11) NOT NULL,
+  `sao` int(5) NOT NULL,
+  `noidung` text NOT NULL,
+  `ngaydanhgia` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `danhgiasanpham`
+--
+
+INSERT INTO `danhgiasanpham` (`madanhgia`, `user_id`, `sp_id`, `sao`, `noidung`, `ngaydanhgia`) VALUES
+(6, 2, 0, 4, 'fefefe', '2025-05-11'),
+(7, 2, 0, 4, 'fefefe', '2025-05-11'),
+(8, 2, 0, 4, 'fefefe', '2025-05-11'),
+(9, 2, 0, 4, 'fefefe', '2025-05-11'),
+(10, 2, 0, 2, 'haha', '2025-05-11'),
+(11, 0, 8, 5, 'test1', '2025-05-11'),
+(12, 0, 2, 3, 'test2', '2025-05-11'),
+(13, 0, 2, 2, 'test3', '2025-05-11'),
+(14, 0, 8, 5, 'test4', '2025-05-11'),
+(15, 0, 2, 5, 'test5', '2025-05-11'),
+(16, 0, 5, 5, 'test6', '2025-05-11'),
+(17, 2, 8, 5, 'Tuyệt', '2025-05-11'),
+(18, 2, 8, 5, 'Tuyệt', '2025-05-11'),
+(19, 2, 6, 5, 'Tuyệt vời', '2025-05-12'),
+(20, 2, 2, 5, 'dia', '2025-05-12'),
+(21, 2, 1, 4, 'len nào', '2025-05-12'),
+(22, 2, 2, 5, 'ttt', '2025-05-12'),
+(23, 2, 8, 5, 'thu', '2025-05-12'),
+(24, 8, 2, 5, 'san phẩm tuyệt vời', '2025-05-12');
 
 -- --------------------------------------------------------
 
@@ -111,11 +151,17 @@ INSERT INTO `orders` (`order_id`, `name`, `created_at`, `address`, `pay_method`,
 (1, 'Vui lòng nhập họ tên', '2025-05-11 14:08:02', 'Vui lòng nhập địa chỉ', 'Momo', 23715000.00, 'Đã giao'),
 (2, 'Vui lòng nhập họ tên', '2025-05-11 14:08:34', 'Vui lòng nhập địa chỉ', 'Thanh toán khi nhận hàng', 209500000.00, 'Đang giao hàng'),
 (3, 'Vui lòng nhập họ tên', '2025-05-11 14:36:07', 'Vui lòng nhập địa chỉ', 'Momo', 184200000.00, 'Đang giao hàng'),
-(4, 'Vui lòng nhập họ tên', '2025-05-11 14:41:13', 'Vui lòng nhập địa chỉ', 'Momo', 29000000.00, 'Đang giao hàng'),
+(4, 'Vui lòng nhập họ tên', '2025-05-11 14:41:13', 'Vui lòng nhập địa chỉ', 'Momo', 29000000.00, 'Đã giao'),
 (5, 'Vui lòng nhập họ tên', '2025-05-11 14:50:33', 'Vui lòng nhập địa chỉ', 'Momo', 184200000.00, 'Đang giao hàng'),
 (6, 'Vui lòng nhập họ tên', '2025-05-11 14:51:31', 'Vui lòng nhập địa chỉ', 'Momo', 32500000.00, 'Đang giao hàng'),
 (7, 'Vui lòng nhập họ tên', '2025-05-11 15:03:06', 'Vui lòng nhập địa chỉ', 'Momo', 74150000.00, 'Đang giao hàng'),
-(8, 'Vui lòng nhập họ tên', '2025-05-11 15:50:11', 'Vui lòng nhập địa chỉ', 'Momo', 15000000.00, 'Đã giao');
+(8, 'Vui lòng nhập họ tên', '2025-05-11 15:50:11', 'Vui lòng nhập địa chỉ', 'Momo', 15000000.00, 'Đã giao'),
+(9, 'Vui lòng nhập họ tên', '2025-05-11 15:56:17', 'Vui lòng nhập địa chỉ', 'Thanh toán khi nhận hàng', 23460000.00, 'Chờ xác nhận'),
+(10, 'Trieu', '2025-05-11 15:59:26', '123 HCM', 'Momo', 25500000.00, 'Đang giao hàng'),
+(11, 'Vui lòng nhập họ tên', '2025-05-12 09:13:08', 'Vui lòng nhập địa chỉ', 'Momo', 17850000.00, 'Chờ xác nhận'),
+(12, 'Vui lòng nhập họ tên', '2025-05-12 09:29:26', 'Vui lòng nhập địa chỉ', 'Momo', 40500000.00, 'Chờ xác nhận'),
+(13, 'trieu', '2025-05-12 11:32:58', '12/9/12 duong 12 thu duc hcm', 'Momo', 27800000.00, 'Chờ xác nhận'),
+(14, 'trieu', '2025-05-12 13:35:19', '12/9/12 duong 12 thu duc hcm', 'Thanh toán khi nhận hàng', 43524000.00, 'Chờ xác nhận');
 
 -- --------------------------------------------------------
 
@@ -149,7 +195,14 @@ INSERT INTO `order_detail` (`order_detail_id`, `order_id`, `ma`, `quantity`, `pr
 (11, 7, 8, 1, 30700000.00),
 (12, 7, 5, 1, 29000000.00),
 (13, 7, 7, 1, 32500000.00),
-(14, 8, 10, 1, 15000000.00);
+(14, 8, 10, 1, 15000000.00),
+(15, 9, 2, 1, 25500000.00),
+(16, 10, 2, 1, 25500000.00),
+(17, 11, 2, 1, 25500000.00),
+(18, 12, 2, 1, 25500000.00),
+(19, 12, 10, 1, 15000000.00),
+(20, 13, 6, 1, 27800000.00),
+(21, 14, 4, 2, 23400000.00);
 
 -- --------------------------------------------------------
 
@@ -246,6 +299,12 @@ ALTER TABLE `chamsoc`
   ADD PRIMARY KEY (`ma_chamsoc`);
 
 --
+-- Indexes for table `danhgiasanpham`
+--
+ALTER TABLE `danhgiasanpham`
+  ADD PRIMARY KEY (`madanhgia`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
@@ -276,16 +335,22 @@ ALTER TABLE `chamsoc`
   MODIFY `ma_chamsoc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `danhgiasanpham`
+--
+ALTER TABLE `danhgiasanpham`
+  MODIFY `madanhgia` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `sanpham`

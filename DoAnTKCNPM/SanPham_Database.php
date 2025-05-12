@@ -134,71 +134,154 @@ class SanPham_Database extends Database
         $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $result;
     }
-    public function TongSoSanPham() {
+    public function TongSoSanPham()
+    {
         $sql = "SELECT COUNT(*) as total FROM sanpham";
-        $result = self::$connection->query($sql); 
+        $result = self::$connection->query($sql);
         $row = $result->fetch_assoc();
         return $row['total'];
     }
     public function getProductStock($productType = null)
-{
-    $sql = "SELECT ten, soluong FROM sanpham"; 
-    $conditions = [];
+    {
+        $sql = "SELECT ten, soluong FROM sanpham";
+        $conditions = [];
 
-    if ($productType) {
-        $conditions[] = "maloai = ?";
+        if ($productType) {
+            $conditions[] = "maloai = ?";
+        }
+
+        if ($conditions) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $stmt = self::$connection->prepare($sql);
+        if (!$stmt) {
+            die("Prepare failed: " . self::$connection->error);
+        }
+
+        if ($productType) {
+            $stmt->bind_param("s", $productType);
+        }
+
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+    public function getProductOders($productType = null, $startDate = null, $endDate = null)
+    {
+        $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1=1";
+
+        if ($productType) {
+            $sql .= " AND ma_loai = ?";
+        }
+        if ($startDate && $endDate) {
+            $sql .= " AND sold_date BETWEEN ? AND ?";
+        }
+        $sql .= " ORDER BY soluong DESC";
+
+        $stmt = self::$connection->prepare($sql);
+        if (!$stmt) {
+            die("Lỗi truy vấn: " . self::$connection->error);
+        }
+
+        // Bind parameters
+        if ($productType && $startDate && $endDate) {
+            $stmt->bind_param("iss", $productType, $startDate, $endDate);
+        } elseif ($productType) {
+            $stmt->bind_param("s", $productType);
+        } elseif ($startDate && $endDate) {
+            $stmt->bind_param("ss", $startDate, $endDate);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data ?: [];
+    }
+    //Search
+    public function TimKiemSanPham($keyword)
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE ten LIKE ?");
+        $search = "%" . $keyword . "%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
+    }
+    public function TatCaLoaiSanPham()
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM loai");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $loais = [];
+        while ($row = $result->fetch_assoc()) {
+            $loais[] = $row;
+        }
+        $stmt->close();
+        return $loais;
     }
 
-    if ($conditions) {
-        $sql .= " WHERE " . implode(" AND ", $conditions);
+
+    public function SanPhamTheoLoai($maloai)
+    {
+        $stmt = self::$connection->prepare("SELECT * FROM sanpham WHERE maloai = ?");
+        $stmt->bind_param("i", $maloai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sanphams = [];
+        while ($row = $result->fetch_assoc()) {
+            $sanphams[] = $row;
+        }
+        $stmt->close();
+        return $sanphams;
     }
 
-    $stmt = self::$connection->prepare($sql);
-    if (!$stmt) {
-        die("Prepare failed: " . self::$connection->error);
+    //Đánh giá sản phẩm
+    public function getDanhGiaByMaSP($masp)
+    {
+        $stmt = self::$connection->prepare("
+        SELECT danhgiasanpham.*, users.username 
+            FROM danhgiasanpham 
+            JOIN users ON danhgiasanpham.user_id = users.id 
+            WHERE danhgiasanpham.sp_id = ? 
+            ORDER BY danhgiasanpham.ngaydanhgia DESC
+    ");
+        $stmt->bind_param("i", $masp);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $reviews = [];
+        while ($row = $result->fetch_assoc()) {
+            $reviews[] = $row;
+        }
+
+        $stmt->close();
+        return $reviews;
     }
 
-    if ($productType) {
-        $stmt->bind_param("s", $productType);
-    }
+    //trung bình số sao
 
-    $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-}
-public function getProductOders($productType = null, $startDate = null, $endDate = null)
-{
-    $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1=1";
-    
-    if ($productType) {
-        $sql .= " AND ma_loai = ?";
-    }
-    if ($startDate && $endDate) {
-        $sql .= " AND sold_date BETWEEN ? AND ?";
-    }
-    $sql .= " ORDER BY soluong DESC";
+    public function getAverageRating($masp)
+    {
+        $stmt = self::$connection->prepare("
+        SELECT ROUND(AVG(sao), 1) AS avg_rating, COUNT(*) AS total_reviews
+        FROM danhgiasanpham 
+        WHERE sp_id = ?
+    ");
+        $stmt->bind_param("i", $masp);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
 
-    $stmt = self::$connection->prepare($sql);
-    if (!$stmt) {
-        die("Lỗi truy vấn: " . self::$connection->error);
+        return $result; // ['avg_rating' => ..., 'total_reviews' => ...]
     }
-
-    // Bind parameters
-    if ($productType && $startDate && $endDate) {
-        $stmt->bind_param("iss", $productType, $startDate, $endDate);
-    } elseif ($productType) {
-        $stmt->bind_param("s", $productType);
-    } elseif ($startDate && $endDate) {
-        $stmt->bind_param("ss", $startDate, $endDate);
-    }
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-
-    return $data ?: []; 
-}
 }

@@ -6,7 +6,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid #eee;
     margin: 20px;
-    
+
 }
 
 .order-header {
@@ -32,19 +32,23 @@
 }
 
 .status-pending {
-    background-color: #ff9800; /* Cam */
+    background-color: #ff9800;
+    /* Cam */
 }
 
 .status-processing {
-    background-color: #2196f3; /* Xanh dương */
+    background-color: #2196f3;
+    /* Xanh dương */
 }
 
 .status-shipped {
-    background-color: #4caf50; /* Xanh lá cây */
+    background-color: #4caf50;
+    /* Xanh lá cây */
 }
 
 .status-delivered {
-    background-color: #00bcd4; /* Xanh lơ */
+    background-color: #00bcd4;
+    /* Xanh lơ */
 }
 
 .order-details {
@@ -84,7 +88,8 @@
     width: 50px;
     height: 50px;
     border-radius: 5px;
-    background-color: #eee; /* Placeholder */
+    background-color: #eee;
+    /* Placeholder */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,18 +118,21 @@
     text-align: right;
     min-width: 70px;
 }
+
 /* MỚI: Hành động đơn hàng */
 .order-actions {
     margin-top: 15px;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    flex-wrap: wrap;
+    /* Khoảng cách giữa các nút */
+    align-items: center;
+
+    /* Căn giữa các nút theo chiều dọc */
 }
 
-.btn-confirm,
+
 .btn-review {
-    padding: 8px 14px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -136,7 +144,28 @@
 }
 
 .btn-confirm {
-    background-color: #28a745; /* Xanh lá cho nút xác nhận */
+    padding: 10px 14px;
+
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    color: white;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease;
+}
+
+.btn-common {
+    padding: 10px 15px;
+    /* Đảm bảo padding giống nhau */
+    font-size: 0.95em;
+    border-radius: 5px;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+    /* Xanh lá cho nút xác nhận */
 }
 
 .btn-confirm:hover {
@@ -144,7 +173,8 @@
 }
 
 .btn-review {
-    background-color: #007bff; /* Xanh dương cho đánh giá */
+    background-color: #007bff;
+    /* Xanh dương cho đánh giá */
 }
 
 .btn-review:hover {

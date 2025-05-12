@@ -9,7 +9,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 }
 
 $sanpham_database = new SanPham_Database();
-$sanphams = $sanpham_database->TatCaSanPham();
+if (isset($_GET['maloai'])) {
+    $sanphams = $sanpham_database->SanPhamTheoLoai($_GET['maloai']);
+} elseif (isset($_GET['keyword'])) {
+    $sanphams = $sanpham_database->TimKiemSanPham($_GET['keyword']);
+} else {
+    $sanphams = $sanpham_database->TatCaSanPham();
+}
 
 ?>
 
@@ -43,66 +49,66 @@ $sanphams = $sanpham_database->TatCaSanPham();
 <body>
     <!-- Section-->
     <section class="py-5 d-flex justify-content-center">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <?php foreach ($sanphams as $item) { ?>
-                    <form action="add_cart.php?masp" method="post">
-                        <div class="list col mb-5">
-                            <div class="card h-100 shadow-sm border-0">
-                                <!-- Sale badge -->
-                                <?php if (!empty($item['giamgia'])) { ?>
-                                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+        <div class="container mt-5">
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                <?php if (empty($sanphams)): ?>
+                    <div class="col-12 text-center">
+                        <p class="text-danger fw-bold">Không tìm thấy sản phẩm nào.</p>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($sanphams as $item): ?>
+                        <div class="col">
+                            <div class="card h-100 shadow-sm position-relative">
+                                <?php if (!empty($item['giamgia'])): ?>
+                                    <div class="badge bg-danger text-white position-absolute" style="top: 10px; right: 10px">
                                         -<?= $item['giamgia'] ?>%
                                     </div>
-                                <?php } ?>
-                                <input type="hidden" id="ma" name="ma" value="<?= $item['ma'] ?>">
-                                <input type="hidden" id="ten" name="ten" value="<?= $item['ten'] ?>">
-                                <input type="hidden" id="gia" name="gia" value="<?= $item['gia'] ?>">
-                                <input type="hidden" id="anh" name="anh" value="<?= $item['anh'] ?>">
-                                <!-- Product image -->
-                                <div class="position-relative overflow-hidden">
-                                    <img class="card-img-top img-fluid" src="<?= htmlspecialchars($item['anh']) ?>" alt="<?= htmlspecialchars($item['ten']) ?>" style="object-fit: cover; height: 250px;">
-                                </div>
+                                <?php endif; ?>
 
-                                <!-- Product details -->
-                                <div class="card-body p-3 text-center">
-                                    <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-decoration-none text-dark">
-                                        <h5 class="fw-bolder"><?= htmlspecialchars($item['ten']) ?></h5>
-                                    </a>
+                                <!-- Ảnh sản phẩm -->
+                                <img src="<?= htmlspecialchars($item['anh']) ?>" class="card-img-top mt-1" style="height: 220px; object-fit: contain;" alt="Ảnh sản phẩm">
 
-                                    <!-- Rating -->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                    </div>
-
-                                    <!-- Product price -->
-                                    <p class="text-danger fw-bold mb-1">
+                                <!-- Nội dung sản phẩm -->
+                                <div class="card-body text-center position-relative">
+                                    <h5 class="card-title mb-1"><?= htmlspecialchars($item['ten']) ?></h5>
+                                    <p class="card-text text-danger fw-bold mb-1">
                                         <?= number_format($item['gia'], 0, ',', '.') ?> VNĐ
                                     </p>
-
-                                    <!-- Product description -->
-                                    <?php $desc = substr($item['mota'], 0, 100); ?>
-                                    <p class="text-muted small mb-2">
-                                        <?= htmlspecialchars(substr($desc, 0, strrpos($desc, " "))) ?>...
-                                        <a href="item.php?masp=<?= htmlspecialchars($item['ma']) ?>" class="text-primary small">Xem thêm</a>
+                                    <p class="card-text text-muted small mb-2">
+                                        <?= htmlspecialchars(mb_substr($item['mota'], 0, 60)) ?>...
                                     </p>
+
+                                    <!-- Vùng click dẫn đến trang chi tiết -->
+                                    <a href="item.php?masp=<?= $item['ma'] ?>" class="stretched-link"></a>
                                 </div>
 
-                                <!-- Product actions -->
-                                <div class="card-footer p-3 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-outline-dark flex-grow-1 me-2">🛒 Thêm vào giỏ</button>
-                                        <a class="btn btn-dark flex-grow-1" href="#">🛍️ Mua ngay</a>
+                                <!-- Footer: nút mua và giỏ hàng -->
+                                <div class="card-footer bg-white border-top-0 z-1 px-3 pb-3">
+                                    <div class="d-flex gap-2">
+                                        <!-- Nút Thêm vào giỏ -->
+                                        <form action="add_cart.php" method="post" class="flex-grow-1" onsubmit="event.stopPropagation();">
+                                            <input type="hidden" name="ma" value="<?= $item['ma'] ?>">
+                                            <input type="hidden" name="ten" value="<?= $item['ten'] ?>">
+                                            <input type="hidden" name="gia" value="<?= $item['gia'] ?>">
+                                            <input type="hidden" name="anh" value="<?= $item['anh'] ?>">
+                                            <button class="btn btn-outline-primary w-100 btn-sm" type="submit">🛒 Thêm</button>
+                                        </form>
+
+                                        <!-- Nút Mua Ngay -->
+                                        <form action="add_cart.php" method="post" class="flex-grow-1" onsubmit="event.stopPropagation();">
+                                            <input type="hidden" name="ma" value="<?= $item['ma'] ?>">
+                                            <input type="hidden" name="ten" value="<?= $item['ten'] ?>">
+                                            <input type="hidden" name="gia" value="<?= $item['gia'] ?>">
+                                            <input type="hidden" name="anh" value="<?= $item['anh'] ?>">
+                                            <button class="btn btn-outline-primary w-100 btn-sm" type="submit">🛍️ Mua ngay</button>
+                                        </form>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                    </form>
-                <?php } ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>
