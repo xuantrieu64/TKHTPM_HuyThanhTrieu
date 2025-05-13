@@ -96,67 +96,6 @@ a {
     margin: 12px 0;
     font-size: 20px;
 }
-
-header {
-    height: var(--header-height);
-    border-bottom: 1px solid #d5d2d2;
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-    background-color: rgba(218, 215, 215, 0.4);
-}
-
-header .row-flex {
-    align-items: center;
-}
-
-.header-logo img {
-    width: 70px;
-    cursor: pointer;
-}
-
-.header-search {
-    position: relative;
-}
-
-.header-search i {
-    position: absolute;
-    top: 50%;
-    left: 6px;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-.header-search input {
-    height: 30px;
-    border: 1px solid black;
-    padding-left: 20px;
-    border-radius: 5px;
-}
-
-.header-cart i {
-    font-size: large;
-    cursor: pointer;
-    position: relative;
-}
-
-.header-cart i::after {
-    position: absolute;
-    content: attr(number);
-    width: 20px;
-    height: 20px;
-    background-color: black;
-    border-radius: 50%;
-    top: -10px;
-    right: -10px;
-    display: flex;
-    color: var(--main-color);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: small;
-}
-
 /**slider***/
 .action .remove-item i.fa-trash,
 .action .remove-item i.fas.fa-trash {
@@ -542,7 +481,7 @@ footer .row-gird {
 
 .cart-total-money .cart-text .btn-pay {
     position: absolute;
-    padding: 10px;
+    padding: 8px;
     border-radius: 10px;
     right: 40px;
     top: -10px;
@@ -593,11 +532,11 @@ footer .row-gird {
 
 .voucher-title h2 {
     font-size: 14px;
-    padding: 12px 0;
     border-bottom: 1px solid #ddd;
     position: relative;
     display: flex;
     justify-content: center;
+    padding-bottom: 10px;
 }
 
 .voucher-title h2 span {
@@ -643,14 +582,14 @@ footer .row-gird {
 
 .btn-apply {
     position: absolute;
-    padding: 10px 20px;
+    padding: 8px 16px;
     background: blue;
     border-radius: 5px;
     color: white;
     font-weight: 700;
     cursor: pointer;
     border: none;
-    left: calc(50% - 36px);
+    left: calc(50% - 44px);
     top: 90%;
 }
 

@@ -100,7 +100,7 @@ li {
 }
 
 .search .search-input {
-    padding: 5px 10px;
+    padding: 3px 6px;
     border-radius: 5px;
     outline: none;
     border: none;
@@ -186,6 +186,9 @@ li {
 .admin-content-review-title h1 {
     padding: 12px;
     font-weight: 500;
+}
+table {
+    margin-bottom: 10px;
 }
 
 .admin-content-review-table-list table {
@@ -280,6 +283,7 @@ td {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 999;
 }
 .wapper-orders {
     width: 800px;
@@ -314,4 +318,10 @@ td {
 }
 .order-total-money {
     padding: 10px;
+}
+/* Phan trang */
+.d-flex {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
 }

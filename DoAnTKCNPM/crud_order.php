@@ -3,10 +3,16 @@ require_once 'Order_Database.php';
 
 $order_database = new Order_Database();
 
-$orders = $order_database->getAllOrdersWithDetails();
+
+
+$keyword = "";
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 10;
+$orders = $order_database->getOrdersWithDetailsByPage($page, $perPage);
+
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 
 <head>
@@ -14,6 +20,7 @@ $orders = $order_database->getAllOrdersWithDetails();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Remix Icon -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
@@ -33,28 +40,16 @@ $orders = $order_database->getAllOrdersWithDetails();
                     </div>
                     <div class="name-admin">Admin</div>
                 </div>
-                <div class="admin-sidebar-content">
+                <div class="admin-sidebar-content p-0">
                     <ul>
-                        <li><a href=""><i class="ri-box-3-line"></i>Quản lý Sản phẩm</a></li>
-                        <li><a href=""><i class="fa-solid fa-calendar"></i>Quản lý Đơn hàng</a></li>
-                        <li><a href=""><i class="ri-feedback-line"></i>Quản lý Đánh giá</a></li>
-                        <li><a href=""><i class="ri-shield-user-line"></i>Quản lý Người dùng</a></li>
-                        <li><a href=""><i class="ri-bar-chart-2-line"></i>Thống kê</a></li>
-                        <li><a href=""><i class="ri-file-chart-line"></i>Báo cáo<i class="ri-arrow-down-s-fill"></i></a>
-                            <ul class="sub-menu">
-                                <div class="sub-menu-items">
-                                    <li><a href=""></a><i class="ri-arrow-right-s-fill"></i>Doanh thu</li>
-                                    <li><a href=""></a><i class="ri-arrow-right-s-fill"></i>Số lượng sản phẩm</li>
-                                    <li><a href=""></a><i class="ri-arrow-right-s-fill"></i>Sản phẩm tốt nhất</li>
-                                </div>
-                            </ul>
-                        </li>
-                        <li><a href=""><i class="ri-discount-percent-line"></i>Khuyến mãi</a></li>
+                        <li><a href="crud_product.php"><i class="ri-box-3-line"></i>Quản lý Sản phẩm</a></li>
+                        <li><a href="crud_order.php"><i class="fa-solid fa-calendar"></i>Quản lý Đơn hàng</a></li>
+                        <li><a href="thongke_sanpham.php"><i class="ri-bar-chart-2-line"></i>Thống kê</a></li>
                     </ul>
                 </div>
             </div>
             <div class="admin-content">
-                <div class="admin-content-top">
+                <div class="admin-content-top p-0">
                     <div class="admin-content-top-left">
                         <ul class="flex-box">
                             <li>
@@ -81,7 +76,7 @@ $orders = $order_database->getAllOrdersWithDetails();
                 </div>
                 <div class="admin-content-review">
                     <div class="admin-content-review-title">
-                        <h1>Quản lý đơn hàng</h1>
+                        <h4 class="m-2">Quản lý đơn hàng</h4>
                     </div>
                     <div class="admin-content-review-table">
                         <div class="admin-content-review-table-list">
@@ -101,14 +96,14 @@ $orders = $order_database->getAllOrdersWithDetails();
                                 <tbody>
                                     <?php foreach ($orders as $order) : ?>
                                         <tr>
-                                            <td><?= $order['order_id'] ?></td>
-                                            <td><?= $order['name'] ?></td>
-                                            <td><?= $order['created_at'] ?></td>
-                                            <td><?= $order['address'] ?></td>
-                                            <td><?= $order['pay_method'] ?></td>
-                                            <td><?= number_format($order['total_money'], 0, ',', '.') ?></td>
-                                            <td><?= $order['status'] ?></td>
-                                            <td>
+                                            <td class="p-1"><?= $order['order_id'] ?></td>
+                                            <td class="p-1"><?= $order['name'] ?></td>
+                                            <td class="p-1"><?= $order['created_at'] ?></td>
+                                            <td class="p-1"><?= $order['address'] ?></td>
+                                            <td class="p-1"><?= $order['pay_method'] ?></td>
+                                            <td class="p-1"><?= number_format($order['total_money'], 0, ',', '.') ?></td>
+                                            <td class="p-1"><?= $order['status'] ?></td>
+                                            <td class="p-1">
                                                 <button class="btn-order" data-id="<?= $order['order_id'] ?>">Xác nhận</button>
                                                 <!-- Trong phần HTML -->
                                                 <button class="btn-order-detail" data-index="<?= $order['order_id'] ?>">Xem chi tiết</button>
@@ -117,7 +112,7 @@ $orders = $order_database->getAllOrdersWithDetails();
                                         <!-- Form chi tiet don hang -->
                                         <div class="form-orders-detail" data-index="<?= $order['order_id'] ?>" style="display: none;">
                                             <div class="wapper-orders">
-                                                <div class="form-order-title">
+                                                <div class="form-order-title pb-0">
                                                     <div class="order-text">Chi tiết đơn hàng</div>
                                                     <p class="order-close">X</p>
                                                 </div>
@@ -137,11 +132,17 @@ $orders = $order_database->getAllOrdersWithDetails();
                                                 </div>
                                             </div>
                                         </div>
-
                                         <!-- End Form chi tiet don hang -->
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center">
+                                <?php
+                                $url = $_SERVER['PHP_SELF'] . "?";
+                                $total = $order_database->getTotalOrders();
+                                echo $order_database->paginateBar($url, $page, $total, $perPage);
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -151,23 +152,7 @@ $orders = $order_database->getAllOrdersWithDetails();
     <!-- End Layout -->
 
     <script>
-        const menuLi = document.querySelectorAll('.admin-sidebar-content > ul > li > a');
-        const submenu = document.querySelectorAll('.sub-menu');
-
-        for (let index = 0; index < menuLi.length; index++) {
-            menuLi[index].addEventListener('click', (e) => {
-
-                e.preventDefault()
-                // for (let i = 0; i < submenu.length; i++) {
-                //     submenu[i].setAttribute("style", "height: 0px")
-                // }
-                menuLi[index].parentNode.querySelector('ul').classList.toggle('active')
-                // const submenuHeight = menuLi[index].parentNode.querySelector('ul .sub-menu-items').offsetHeight
-                // menuLi[index].parentNode.querySelector('ul').setAttribute("style", "height: " + submenuHeight + "px")
-
-            });
-        }
-
+        
         const btnDetails = document.querySelectorAll('.btn-order-detail');
         const formDetails = document.querySelectorAll('.form-orders-detail');
         const closeDetails = document.querySelectorAll('.order-close');

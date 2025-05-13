@@ -3,7 +3,7 @@ require_once 'Database.php';
 
 class Order_Database extends Database
 {
-    //Order
+    //Lấy tất cả sản phẩm
     public function getAllOrders()
     {
         $sql = self::$connection->prepare("SELECT * FROM orders");
@@ -11,23 +11,6 @@ class Order_Database extends Database
         $items = array();
         $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $items;
-    }
-    public function getOrderById($order_id)
-    {
-        $sql = self::$connection->prepare("SELECT * FROM `orders` WHERE order_id = ?");
-        $sql->bind_param('i', $order_id);
-        $sql->execute();
-        $items = array();
-        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
-        return $items;
-    }
-    public function addOrder($id, $address, $pay_method, $total_money)
-    {
-        $sql = self::$connection->prepare("INSERT INTO orders (`id`, `address`, `pay_method`, `total_money`) 
-        VALUES (?, ?, ?, ?)");
-        $sql->bind_param('issi', $id, $address, $pay_method, $total_money);
-        $result = $sql->execute();
-        return $result;
     }
     //Order detail
     public function getAllOrderDetail()
@@ -44,11 +27,8 @@ class Order_Database extends Database
         $orders = $this->getAllOrders();
         foreach ($orders as &$order) {
             $order_id = $order['order_id'];
-            $sql = self::$connection->prepare("
-            SELECT od.*, sp.ten, sp.anh 
-            FROM order_detail od 
-            INNER JOIN sanpham sp ON od.ma = sp.ma 
-            WHERE od.order_id = ?");
+            $sql = self::$connection->prepare("SELECT od.*, sp.ten, sp.anh FROM order_detail od 
+            INNER JOIN sanpham sp ON od.ma = sp.ma WHERE od.order_id = ?");
             $sql->bind_param("i", $order_id);
             $sql->execute();
             $order['details'] = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -86,5 +66,74 @@ class Order_Database extends Database
         $sql = self::$connection->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
         $sql->bind_param('si', $newStatus, $orderId);
         return $sql->execute();
+    }
+    public function getOrdersByPage($page, $perPage)
+    {
+        $startPage = ($page - 1) * $perPage;
+        $sql = self::$connection->prepare("SELECT * FROM orders ORDER BY created_at DESC LIMIT ?, ?");
+        $sql->bind_param("ii", $startPage, $perPage);
+        $sql->execute();
+        return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getTotalOrders()
+    {
+        $sql = self::$connection->prepare("SELECT COUNT(*) as total FROM orders");
+        $sql->execute();
+        return $sql->get_result()->fetch_assoc()['total'];
+    }
+
+
+
+    public function paginateBar($url, $page, $total, $perPage)
+    {
+        $totalLink = ceil($total / $perPage);
+        if ($total <= $perPage) {
+            return '';
+        }
+        $link = "<ul class='pagination'>";
+        //nut ve dau tien
+        $link .= "<li class='page-item'><a href='$url&page=1' class='page-link'>&laquo;&laquo;</a></li>";
+        //nut ve truoc do
+        $prevPage = ($page > 1) ? ($page - 1) : 1;
+        $link .= "<li class='page-item'><a href='$url&page=$prevPage' class='page-link'>&laquo;</a></li>";
+        //cac trang
+        for ($j = 1; $j <= $totalLink; $j++) {
+            if ($j == $page) {
+                $link .= "<li class='page-item active'><a href='$url&page=$j' class='page-link'>$j</a></li>";
+            } else {
+                $link .= "<li class='page-item'><a href='$url&page=$j' class='page-link'>$j</a></li>";
+            }
+        }
+        //nut ke tiep
+        $nextPage = ($page < $totalLink) ? ($page + 1) : $totalLink;
+        $link .= "<li class='page-item'><a href='$url&page=$nextPage' class='page-link'>&raquo;</a></li>";
+        //nut ve cuoi
+        $link .= "<li class='page-item'><a href='$url&page=$totalLink' class='page-link'>&raquo;&raquo;</a></li>";
+        $link .= "</ul>";
+        return $link;
+    }
+    public function getOrdersWithDetailsByPage($page, $perPage)
+    {
+        $orders = $this->getOrdersByPage($page, $perPage);
+        foreach ($orders as &$order) {
+            $order_id = $order['order_id'];
+            $sql = self::$connection->prepare("SELECT od.*, sp.ten, sp.anh FROM order_detail od 
+            INNER JOIN sanpham sp ON od.ma = sp.ma WHERE od.order_id = ?");
+            $sql->bind_param("i", $order_id);
+            $sql->execute();
+            $order['details'] = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+        return $orders;
+    }
+    //Lấy mã sản phẩm và số lượng sản phẩm theo đơn hàng
+    public function getSanPhamWithQuantity($order_id)
+    {
+        $sql = self::$connection->prepare("SELECT ma, quantity FROM order_detail WHERE order_id = ?");
+        $sql->bind_param("i", $order_id);
+        $sql->execute();
+
+        $result = $sql->get_result();
+        return $result;
     }
 }
