@@ -138,7 +138,7 @@ class SanPham_Database extends Database
         $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1=1";
 
         if ($productType) {
-            $sql .= " AND ma_loai = ?";
+            $sql .= " AND maloai = ?";
         }
         if ($startDate && $endDate) {
             $sql .= " AND sold_date BETWEEN ? AND ?";
@@ -168,6 +168,20 @@ class SanPham_Database extends Database
         }
 
         return $data ?: [];
+    }
+    public function getAllProductTypes()
+    {
+        $conn = self::$connection;
+        $sql = "SELECT maloai, tenloai FROM loai";
+        $result = $conn->query($sql);
+
+        $productTypes = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $productTypes[] = $row;
+            }
+        }
+        return $productTypes;
     }
     //Search
     public function TimKiemSanPham($keyword)
