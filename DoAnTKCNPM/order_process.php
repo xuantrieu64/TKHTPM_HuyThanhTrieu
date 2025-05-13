@@ -1,6 +1,6 @@
 <?php
 require_once 'Order_Database.php';
-$order_database = new Order_Database();
+$order_database = new Order_Database(); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1. Lấy thông tin người dùng

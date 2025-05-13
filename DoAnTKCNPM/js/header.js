@@ -14,25 +14,3 @@ setInterval(() => {
         listImage.style.transform = `translateX(${width * -1 * current}px)`;
     }
 }, intervalTime);
-
-document.addEventListener("DOMContentLoaded", () => {
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-
-    dropdownToggle.addEventListener('click', (e) => {
-        e.preventDefault(); // Ngăn chặn chuyển hướng link
-
-        const items = dropdownMenu.querySelectorAll('li');
-        const itemHeight = 42.5; // px
-        const totalHeight = items.length * itemHeight;
-
-        // Toggle hiển thị
-        if (dropdownMenu.classList.contains('show')) {
-            dropdownMenu.classList.remove('show');
-            dropdownMenu.style.height = '0px';
-        } else {
-            dropdownMenu.classList.add('show');
-            dropdownMenu.style.height = totalHeight + 'px';
-        }
-    });
-});

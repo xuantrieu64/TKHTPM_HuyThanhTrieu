@@ -1,0 +1,23 @@
+/* Slider */
+
+.slider {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-show {
+    width: 800px;
+    overflow: hidden;
+}
+
+.list-image {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.list-image img {
+    width: 800px;
+    height: 400px;
+}

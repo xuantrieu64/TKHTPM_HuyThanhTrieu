@@ -12,30 +12,6 @@ class SanPham_Database extends Database
         $result = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $result;
     }
-
-    // {
-    // Tính số thứ tự trang bắt đầu
-    // $firstLink = ($page - 1) * $perPage;
-    //Dùng LIMIT để giới hạn số lượng hiển thị 1 trang
-    // $sql = "SELECT * FROM products LIMIT $firstLink, $perPage";
-    // $sql->execute(); //return an object
-    // $items = array();
-    // $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
-    // return $items; //return an array
-    // } 
-
-    //lay id
-    // public function getProductById($id)
-    // {
-    //     $sql = self::$connection->prepare("SELECT * FROM product WHERE id = ?");
-    //     $sql->bind_param("i", $id); //Truy van cau lenh
-    //     $sql->execute(); //Thuc thi cau lenh
-
-    //     $items = array();
-    //     $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
-    //     return $items;
-    // }
-
     public function getProductByID($id)
     {
         $sql = self::$connection->prepare("SELECT * FROM `sanpham` WHERE ma=?");
@@ -72,15 +48,6 @@ class SanPham_Database extends Database
         return $result;
     }
 
-    //Delete
-    // public function deleteProduct($id)
-    // {
-    //     $sql = self::$connection->prepare("DELETE FROM sanpham WHERE masp = ?");
-    //     $sql->bind_param("i", $id);
-    //     $resualt = $sql->execute();
-
-    //     return $resualt;
-    // }
     //Search
     public function searchProduct($keyword)
     {
@@ -283,5 +250,14 @@ class SanPham_Database extends Database
         $stmt->close();
 
         return $result; // ['avg_rating' => ..., 'total_reviews' => ...]
+    }
+    //Cập nhật số lượng dựa vào mã sản phẩm
+    public function updateQuantity($ma, $quantity)
+    {
+        $sql = self::$connection->prepare("UPDATE sanpham SET soluong = soluong - ?, daban = daban + ?
+        WHERE ma = ? AND soluong >= ?");
+        $sql->bind_param("iiii", $quantity, $quantity, $ma, $quantity);
+        $item = $sql->execute();
+        return $item;
     }
 }

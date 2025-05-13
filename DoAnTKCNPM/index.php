@@ -29,6 +29,8 @@ if (isset($_GET['maloai'])) {
     <meta name="author" content="" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -43,6 +45,7 @@ if (isset($_GET['maloai'])) {
     <link rel="stylesheet" href="css/header.css?v=<?= filemtime('css/header.css') ?>">
     <!-- Style Footer  -->
     <link rel="stylesheet" href="css/footer.css?v=<?= filemtime('css/footer.css') ?>">
+
 
 </head>
 
@@ -117,12 +120,11 @@ if (isset($_GET['maloai'])) {
     <?php
     require_once 'footer.php';
     ?>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
     <!-- Link JS Header -->
     <script src="js/header.js"></script>
+
 </body>
 
 </html>

@@ -12,7 +12,7 @@ $orders = $order_database->getOrdersWithDetailsByPage($page, $perPage);
 
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 
 <head>

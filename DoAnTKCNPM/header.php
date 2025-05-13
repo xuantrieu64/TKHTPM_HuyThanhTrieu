@@ -4,6 +4,7 @@ $category_database = new Category_Database();
 $loaisanpham = $category_database->getAllLoai();
 
 ?>
+
 <!-- Start Header -->
 <header>
     <!-- Header: Bootstrap Navbar -->
@@ -50,16 +51,13 @@ $loaisanpham = $category_database->getAllLoai();
 <!-- End Header -->
 
 <!-- Start Slider -->
-<div id="carouselExample" class="carousel slide m-5" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active"><img src="img/slider-iphone.jpg" class="d-block w-100" alt="iPhone"></div>
-        <div class="carousel-item"><img src="img/slider-oppo.jpg" class="d-block w-100" alt="Oppo"></div>
-        <div class="carousel-item"><img src="img/slider-poco.jpg" class="d-block w-100" alt="Poco"></div>
+<div class="slider">
+    <div class="slide-show">
+        <div class="list-image" style="display: flex;">
+            <img style="width: 800px;" src="img/slider-iphone.jpg" alt="">
+            <img style="width: 800px;" src="img/slider-oppo.jpg" alt="">
+            <img style="width: 800px;" src="img/slider-poco.jpg" alt="">
+            <img style="width: 800px;" src="img/slider-tecno.jpg" alt="">
+        </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </button>
 </div>
