@@ -3,7 +3,7 @@ require_once 'Database.php';
 
 class Order_Database extends Database
 {
-    //Order
+    //Lấy tất cả sản phẩm
     public function getAllOrders()
     {
         $sql = self::$connection->prepare("SELECT * FROM orders");
@@ -11,23 +11,6 @@ class Order_Database extends Database
         $items = array();
         $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $items;
-    }
-    public function getOrderById($order_id)
-    {
-        $sql = self::$connection->prepare("SELECT * FROM `orders` WHERE order_id = ?");
-        $sql->bind_param('i', $order_id);
-        $sql->execute();
-        $items = array();
-        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC)[0];
-        return $items;
-    }
-    public function addOrder($id, $address, $pay_method, $total_money)
-    {
-        $sql = self::$connection->prepare("INSERT INTO orders (`id`, `address`, `pay_method`, `total_money`) 
-        VALUES (?, ?, ?, ?)");
-        $sql->bind_param('issi', $id, $address, $pay_method, $total_money);
-        $result = $sql->execute();
-        return $result;
     }
     //Order detail
     public function getAllOrderDetail()
@@ -44,11 +27,8 @@ class Order_Database extends Database
         $orders = $this->getAllOrders();
         foreach ($orders as &$order) {
             $order_id = $order['order_id'];
-            $sql = self::$connection->prepare("
-            SELECT od.*, sp.ten, sp.anh 
-            FROM order_detail od 
-            INNER JOIN sanpham sp ON od.ma = sp.ma 
-            WHERE od.order_id = ?");
+            $sql = self::$connection->prepare("SELECT od.*, sp.ten, sp.anh FROM order_detail od 
+            INNER JOIN sanpham sp ON od.ma = sp.ma WHERE od.order_id = ?");
             $sql->bind_param("i", $order_id);
             $sql->execute();
             $order['details'] = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -138,15 +118,22 @@ class Order_Database extends Database
         $orders = $this->getOrdersByPage($page, $perPage);
         foreach ($orders as &$order) {
             $order_id = $order['order_id'];
-            $sql = self::$connection->prepare("
-            SELECT od.*, sp.ten, sp.anh 
-            FROM order_detail od 
-            INNER JOIN sanpham sp ON od.ma = sp.ma 
-            WHERE od.order_id = ?");
+            $sql = self::$connection->prepare("SELECT od.*, sp.ten, sp.anh FROM order_detail od 
+            INNER JOIN sanpham sp ON od.ma = sp.ma WHERE od.order_id = ?");
             $sql->bind_param("i", $order_id);
             $sql->execute();
             $order['details'] = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         }
         return $orders;
+    }
+    //Lấy mã sản phẩm và số lượng sản phẩm theo đơn hàng
+    public function getSanPhamWithQuantity($order_id)
+    {
+        $sql = self::$connection->prepare("SELECT ma, quantity FROM order_detail WHERE order_id = ?");
+        $sql->bind_param("i", $order_id);
+        $sql->execute();
+
+        $result = $sql->get_result();
+        return $result;
     }
 }

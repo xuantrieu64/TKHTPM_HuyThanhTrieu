@@ -5,7 +5,6 @@ require_once 'Order_Database.php';
 $order_database = new Order_Database();
 
 
-
 // Lấy danh sách đơn hàng
 $orders = $order_database->getAllOrdersWithDetails();
 ?>
@@ -59,22 +58,6 @@ $orders = $order_database->getAllOrdersWithDetails();
 </head>
 
 <body>
-    <!-- <div id="center-toast" style="
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #198754;
-    color: white;
-    padding: 16px 28px;
-    border-radius: 8px;
-    font-size: 18px;
-    z-index: 9999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-"></div> -->
-
-
     <h2 style="margin:0 20px;">Đơn hàng của bạn</h2>
 
     <?php foreach ($orders as $order): ?>
@@ -158,7 +141,7 @@ $orders = $order_database->getAllOrdersWithDetails();
                         </div>
                     </div>
                 </div>
-        
+
                 <!-- Modal đánh giá từng sản phẩm -->
                 <div id="danhGiaModalContainer_<?= $order['order_id'] ?>" style="display: contents">
                     <?php foreach ($order['details'] as $item): ?>
@@ -181,7 +164,7 @@ $orders = $order_database->getAllOrdersWithDetails();
                                                     <?php endfor; ?>
                                                     <input type="hidden" name="sao" class="rating-value" value="">
                                                 </div>
-        
+
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Nội dung</label>
