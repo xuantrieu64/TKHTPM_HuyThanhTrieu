@@ -135,13 +135,13 @@ class SanPham_Database extends Database
     }
     public function getProductOders($productType = null, $startDate = null, $endDate = null)
     {
-        $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1=1";
+        $sql = "SELECT ten, daban AS soluong FROM sanpham WHERE 1 = 1";
 
         if ($productType) {
             $sql .= " AND maloai = ?";
         }
         if ($startDate && $endDate) {
-            $sql .= " AND sold_date BETWEEN ? AND ?";
+            $sql .= " AND ngaytao BETWEEN ? AND ?";
         }
         $sql .= " ORDER BY soluong DESC";
 
@@ -154,7 +154,7 @@ class SanPham_Database extends Database
         if ($productType && $startDate && $endDate) {
             $stmt->bind_param("iss", $productType, $startDate, $endDate);
         } elseif ($productType) {
-            $stmt->bind_param("s", $productType);
+            $stmt->bind_param("i", $productType);
         } elseif ($startDate && $endDate) {
             $stmt->bind_param("ss", $startDate, $endDate);
         }
@@ -169,20 +169,7 @@ class SanPham_Database extends Database
 
         return $data ?: [];
     }
-    public function getAllProductTypes()
-    {
-        $conn = self::$connection;
-        $sql = "SELECT maloai, tenloai FROM loai";
-        $result = $conn->query($sql);
 
-        $productTypes = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $productTypes[] = $row;
-            }
-        }
-        return $productTypes;
-    }
     //Search
     public function TimKiemSanPham($keyword)
     {

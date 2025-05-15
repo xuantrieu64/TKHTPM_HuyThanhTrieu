@@ -1,0 +1,45 @@
+[15-May-2025 09:05:09 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:09 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:14 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:14 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:14 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:28 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:29 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:30 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56
+[15-May-2025 09:05:48 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Order_Database::addOrderAndReturnId(), 0 passed in /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php on line 6 and exactly 4 expected in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php:56
+Stack trace:
+#0 /home/xobjhnrc/public_html/DoAnTKCNPM/crud_order.php(6): Order_Database->addOrderAndReturnId()
+#1 {main}
+  thrown in /home/xobjhnrc/public_html/DoAnTKCNPM/Order_Database.php on line 56

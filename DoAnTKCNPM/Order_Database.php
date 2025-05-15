@@ -69,12 +69,15 @@ class Order_Database extends Database
     }
     public function getOrdersByPage($page, $perPage)
     {
-        $startPage = ($page - 1) * $perPage;
-        $sql = self::$connection->prepare("SELECT * FROM orders ORDER BY created_at DESC LIMIT ?, ?");
-        $sql->bind_param("ii", $startPage, $perPage);
+        $startPage = (int)(($page - 1) * $perPage);
+        $perPage = (int)$perPage;
+        $query = "SELECT * FROM orders ORDER BY order_id DESC LIMIT $startPage, $perPage";
+        $sql = self::$connection->prepare($query);
         $sql->execute();
         return $sql->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+
 
     public function getTotalOrders()
     {

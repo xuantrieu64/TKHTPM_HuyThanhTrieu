@@ -8,4 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
     $result = $db->updateOrderStatus($orderId, 'Đang giao hàng');
 
     echo $result ? 'success' : 'error';
+    
+    exit; 
 }

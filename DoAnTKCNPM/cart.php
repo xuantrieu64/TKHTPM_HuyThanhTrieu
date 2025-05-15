@@ -61,7 +61,7 @@ $sanphams = $sanpham_database->TatCaSanPham();
 
 <body>
     <section class="cart-section p-to-top">
-        <div class="container">
+        <div class="container" style="margin-bottom: 100px;">
             <div class="row-flex row-flex-product-cart">
                 <p class="heading-text">Giỏ hàng</p>
             </div>
